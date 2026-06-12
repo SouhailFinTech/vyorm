@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AlgoQuant — Systematic Trading Systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --bg:#0a0a0f;
+  --bg2:#0f0f18;
+  --bg3:#141420;
+  --blue:#3b82f6;
+  --blue2:#60a5fa;
+  --purple:#8b5cf6;
+  --purple2:#a78bfa;
+  --grad:linear-gradient(135deg,#3b82f6 0%,#8b5cf6 100%);
+  --grad2:linear-gradient(135deg,#8b5cf6 0%,#3b82f6 100%);
+  --text:#f1f5f9;
+  --muted:#64748b;
+  --muted2:#475569;
+  --border:rgba(139,92,246,0.15);
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Space Grotesk',sans-serif;
+}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  line-height:1.6;
+  overflow-x:hidden;
+  position:relative;
+}
+
+/* Animated background */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(circle at 20% 30%,rgba(59,130,246,0.08) 0%,transparent 50%),
+    radial-gradient(circle at 80% 70%,rgba(139,92,246,0.08) 0%,transparent 50%);
+  pointer-events:none;
+  z-index:0;
+}
+
+/* NAV */
+nav{
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:1000;
+  padding:1rem 3rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:rgba(10,10,15,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  font-family:var(--mono);
+  font-size:1rem;
+  font-weight:700;
+  background:var(--grad);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  cursor:pointer;
+  letter-spacing:0.05em;
+}
+.nav-items{display:flex;gap:0.5rem}
+.nav-btn{
+  font-family:var(--mono);
+  font-size:0.75rem;
+  font-weight:500;
+  color:var(--muted);
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:0.5rem 1rem;
+  border-radius:8px;
+  transition:all 0.3s;
+  position:relative;
+}
+.nav-btn:hover{color:var(--text);background:rgba(139,92,246,0.1)}
+.nav-btn.active{
+  color:var(--purple2);
+  background:rgba(139,92,246,0.15);
+}
+.nav-btn.active::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:50%;
+  transform:translateX(-50%);
+  width:20px;height:2px;
+  background:var(--grad);
+  border-radius:2px;
+}
+.nav-contact{
+  font-family:var(--mono);
+  font-size:0.75rem;
+  font-weight:700;
+  color:#fff;
+  background:var(--grad);
+  border:none;
+  cursor:pointer;
+  padding:0.6rem 1.5rem;
+  border-radius:8px;
+  transition:all 0.3s;
+  box-shadow:0 4px 20px rgba(139,92,246,0.3);
+}
+.nav-contact:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 30px rgba(139,92,246,0.5);
+}
+
+/* PAGES */
+.page{display:none;position:relative;z-index:1;min-height:100vh}
+.page.active{display:block}
+
+/* HOME */
+#home{
+  padding:8rem 3rem 4rem;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  max-width:1400px;
+  margin:0 auto;
+}
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:0.5rem;
+  font-family:var(--mono);
+  font-size:0.7rem;
+  font-weight:600;
+  color:var(--purple2);
+  background:rgba(139,92,246,0.1);
+  border:1px solid rgba(139,92,246,0.3);
+  padding:0.4rem 1rem;
+  border-radius:100px;
+  margin-bottom:2rem;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+}
+.hero-badge::before{
+  content:'';
+  width:6px;height:6px;
+  border-radius:50%;
+  background:var(--purple);
+  box-shadow:0 0 10px var(--purple);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:0.5;transform:scale(0.8)}
+}
+.hero-h1{
+  font-size:clamp(2.5rem,5vw,4.5rem);
+  font-weight:700;
+  line-height:1.1;
+  letter-spacing:-0.02em;
+  margin-bottom:1.5rem;
+}
+.grad-text{
+  background:var(--grad);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-sub{
+  font-size:1.1rem;
+  color:var(--muted);
+  max-width:700px;
+  margin-bottom:1rem;
+  line-height:1.8;
+}
+.hero-code{
+  font-family:var(--mono);
+  font-size:0.85rem;
+  color:var(--muted);
+  background:rgba(139,92,246,0.05);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:1.5rem 2rem;
+  margin:2rem 0;
+  max-width:700px;
+  line-height:1.8;
+}
+.hero-code .c1{color:var(--blue2)}
+.hero-code .c2{color:var(--purple2)}
+.hero-code .cursor{
+  display:inline-block;
+  width:8px;height:1em;
+  background:var(--purple);
+  animation:blink 1s step-end infinite;
+  margin-left:2px;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+.stack-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.6rem;
+  margin:2rem 0;
+}
+.stack-tag{
+  font-family:var(--mono);
+  font-size:0.75rem;
+  font-weight:500;
+  color:var(--muted);
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+  padding:0.4rem 1rem;
+  border-radius:6px;
+  transition:all 0.3s;
+}
+.stack-tag:hover{
+  color:var(--purple2);
+  border-color:rgba(139,92,246,0.4);
+  background:rgba(139,92,246,0.08);
+  transform:translateY(-2px);
+}
+
+.hero-btns{
+  display:flex;
+  gap:1rem;
+  margin:2.5rem 0 3rem;
+}
+.btn-primary{
+  font-family:var(--mono);
+  font-size:0.85rem;
+  font-weight:700;
+  background:var(--grad);
+  color:#fff;
+  border:none;
+  cursor:pointer;
+  padding:0.9rem 2rem;
+  border-radius:10px;
+  transition:all 0.3s;
+  box-shadow:0 4px 20px rgba(139,92,246,0.3);
+  text-decoration:none;
+  display:inline-block;
+}
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 30px rgba(139,92,246,0.5);
+}
+.btn-secondary{
+  font-family:var(--mono);
+  font-size:0.85rem;
+  font-weight:600;
+  background:rgba(255,255,255,0.05);
+  color:var(--text);
+  border:1px solid rgba(255,255,255,0.1);
+  cursor:pointer;
+  padding:0.9rem 2rem;
+  border-radius:10px;
+  transition:all 0.3s;
+  text-decoration:none;
+  display:inline-block;
+}
+.btn-secondary:hover{
+  border-color:rgba(139,92,246,0.4);
+  background:rgba(139,92,246,0.08);
+  transform:translateY(-2px);
+}
+
+.spec-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:1rem;
+  margin-top:3rem;
+}
+.spec-card{
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:12px;
+  padding:1.5rem;
+  transition:all 0.3s;
+  position:relative;
+  overflow:hidden;
+}
+.spec-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:var(--grad);
+  opacity:0;
+  transition:opacity 0.3s;
+}
+.spec-card:hover{
+  background:rgba(139,92,246,0.05);
+  border-color:rgba(139,92,246,0.3);
+  transform:translateY(-4px);
+}
+.spec-card:hover::before{opacity:1}
+.spec-icon{
+  font-size:1.5rem;
+  margin-bottom:0.8rem;
+}
+.spec-title{
+  font-size:0.95rem;
+  font-weight:700;
+  margin-bottom:0.4rem;
+}
+.spec-desc{
+  font-size:0.8rem;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+/* INNER PAGES */
+.inner{
+  padding:8rem 3rem 4rem;
+  max-width:1400px;
+  margin:0 auto;
+}
+.page-badge{
+  font-family:var(--mono);
+  font-size:0.7rem;
+  font-weight:700;
+  color:var(--purple2);
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  margin-bottom:0.8rem;
+}
+.page-h1{
+  font-size:clamp(2rem,4vw,3.5rem);
+  font-weight:700;
+  letter-spacing:-0.02em;
+  margin-bottom:1rem;
+  line-height:1.1;
+}
+.page-sub{
+  font-size:1rem;
+  color:var(--muted);
+  max-width:700px;
+  line-height:1.8;
+  margin-bottom:3rem;
+}
+
+/* SUBNAV */
+.subnav{
+  display:flex;
+  gap:0.5rem;
+  margin-bottom:3rem;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px;
+  padding:0.5rem;
+  width:fit-content;
+}
+.subnav-btn{
+  font-family:var(--mono);
+  font-size:0.75rem;
+  font-weight:600;
+  color:var(--muted);
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:0.5rem 1.2rem;
+  border-radius:8px;
+  transition:all 0.3s;
+}
+.subnav-btn.active,.subnav-btn:hover{
+  color:var(--text);
+  background:rgba(139,92,246,0.15);
+}
+.subnav-btn.active{
+  color:var(--purple2);
+  box-shadow:0 2px 10px rgba(139,92,246,0.2);
+}
+
+.subpage{display:none}
+.subpage.active{display:block}
+
+/* CATEGORY */
+.cat-label{
+  font-family:var(--mono);
+  font-size:0.7rem;
+  font-weight:700;
+  color:var(--blue2);
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  margin:2.5rem 0 1.5rem;
+  display:flex;
+  align-items:center;
+  gap:1rem;
+}
+.cat-label::after{
+  content:'';
+  flex:1;
+  height:1px;
+  background:linear-gradient(90deg,rgba(59,130,246,0.3),transparent);
+}
+
+/* CARDS */
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:1.2rem;
+}
+.card{
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:14px;
+  padding:1.8rem;
+  transition:all 0.3s;
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+}
+.card::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:var(--grad);
+  opacity:0;
+  transition:opacity 0.3s;
+  z-index:0;
+}
+.card:hover{
+  border-color:rgba(139,92,246,0.4);
+  transform:translateY(-4px);
+  box-shadow:0 8px 30px rgba(139,92,246,0.2);
+}
+.card:hover::before{opacity:0.03}
+.card>*{position:relative;z-index:1}
+.card-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  margin-bottom:1rem;
+}
+.card-tag{
+  font-family:var(--mono);
+  font-size:0.65rem;
+  font-weight:700;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  padding:0.3rem 0.8rem;
+  border-radius:6px;
+}
+.tag-blue{
+  color:var(--blue2);
+  background:rgba(59,130,246,0.15);
+  border:1px solid rgba(59,130,246,0.3);
+}
+.tag-purple{
+  color:var(--purple2);
+  background:rgba(139,92,246,0.15);
+  border:1px solid rgba(139,92,246,0.3);
+}
+.tag-green{
+  color:#10b981;
+  background:rgba(16,185,129,0.15);
+  border:1px solid rgba(16,185,129,0.3);
+}
+.tag-soon{
+  color:var(--muted);
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+}
+.card-title{
+  font-size:1.05rem;
+  font-weight:700;
+  margin-bottom:0.6rem;
+}
+.card-desc{
+  font-size:0.85rem;
+  color:var(--muted);
+  line-height:1.7;
+}
+.card-link{
+  display:inline-flex;
+  align-items:center;
+  gap:0.4rem;
+  margin-top:1.2rem;
+  font-family:var(--mono);
+  font-size:0.75rem;
+  color:var(--blue2);
+  text-decoration:none;
+  transition:all 0.3s;
+}
+.card-link:hover{
+  color:var(--purple2);
+  gap:0.6rem;
+}
+
+/* SAAS CARDS */
+.saas-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+  gap:1.5rem;
+}
+.saas-card{
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:16px;
+  padding:2.5rem;
+  transition:all 0.3s;
+  position:relative;
+  overflow:hidden;
+}
+.saas-card::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:150px;
+  background:linear-gradient(0deg,rgba(139,92,246,0.08),transparent);
+  pointer-events:none;
+}
+.saas-card:hover{
+  border-color:rgba(139,92,246,0.4);
+  transform:translateY(-6px);
+  box-shadow:0 12px 40px rgba(139,92,246,0.25);
+}
+.saas-num{
+  font-family:var(--mono);
+  font-size:3.5rem;
+  font-weight:700;
+  background:var(--grad);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  opacity:0.3;
+  margin-bottom:1rem;
+}
+.saas-name{
+  font-size:1.3rem;
+  font-weight:700;
+  margin-bottom:0.5rem;
+}
+.saas-mono{
+  font-family:var(--mono);
+  font-size:0.75rem;
+  color:var(--purple2);
+  margin-bottom:1rem;
+  letter-spacing:0.05em;
+}
+.saas-desc{
+  font-size:0.9rem;
+  color:var(--muted);
+  line-height:1.8;
+}
+
+/* GIG CARDS */
+.gig-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:1.3rem;
+}
+.gig-card{
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:14px;
+  padding:2rem;
+  transition:all 0.3s;
+}
+.gig-card:hover{
+  border-color:rgba(59,130,246,0.4);
+  transform:translateY(-4px);
+  box-shadow:0 8px 30px rgba(59,130,246,0.2);
+}
+.gig-num{
+  font-family:var(--mono);
+  font-size:0.7rem;
+  font-weight:700;
+  color:var(--blue2);
+  letter-spacing:0.12em;
+  margin-bottom:1rem;
+}
+.gig-title{
+  font-size:1.1rem;
+  font-weight:700;
+  margin-bottom:0.8rem;
+}
+.gig-desc{
+  font-size:0.85rem;
+  color:var(--muted);
+  line-height:1.8;
+  margin-bottom:1.5rem;
+}
+.gig-email{
+  font-family:var(--mono);
+  font-size:0.75rem;
+  color:var(--blue2);
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:0.4rem;
+  transition:all 0.3s;
+}
+.gig-email:hover{
+  color:var(--purple2);
+  gap:0.6rem;
+}
+
+/* YOUTUBE HERO */
+.yt-hero{
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:20px;
+  padding:3rem;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:3rem;
+  align-items:center;
+  margin-bottom:3rem;
+  position:relative;
+  overflow:hidden;
+}
+.yt-hero::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(59,130,246,0.05),rgba(139,92,246,0.05));
+}
+.yt-logo{
+  width:90px;height:90px;
+  border-radius:18px;
+  background:var(--grad);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:2.5rem;
+  flex-shrink:0;
+  position:relative;
+  z-index:1;
+  box-shadow:0 8px 30px rgba(139,92,246,0.3);
+}
+.yt-info{position:relative;z-index:1}
+.yt-handle{
+  font-family:var(--mono);
+  font-size:1.3rem;
+  font-weight:700;
+  background:var(--grad);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  margin-bottom:0.8rem;
+}
+.yt-desc{
+  font-size:0.95rem;
+  color:var(--muted);
+  line-height:1.8;
+  margin-bottom:1.5rem;
+  max-width:600px;
+}
+.yt-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.5rem;
+  margin-bottom:2rem;
+}
+.yt-tag{
+  font-family:var(--mono);
+  font-size:0.7rem;
+  color:var(--muted);
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  padding:0.3rem 0.9rem;
+  border-radius:6px;
+}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--border);
+  padding:2.5rem 3rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-top:4rem;
+  position:relative;
+  z-index:1;
+}
+.footer-logo{
+  font-family:var(--mono);
+  font-size:0.9rem;
+  font-weight:700;
+  background:var(--grad);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.footer-links{
+  display:flex;
+  gap:2rem;
+}
+.footer-links a{
+  font-family:var(--mono);
+  font-size:0.75rem;
+  color:var(--muted);
+  text-decoration:none;
+  transition:color 0.3s;
+}
+.footer-links a:hover{color:var(--purple2)}
+
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(10,10,15,0.95);
+  backdrop-filter:blur(10px);
+  z-index:2000;
+  align-items:center;
+  justify-content:center;
+  padding:2rem;
+}
+.modal.active{display:flex}
+.modal-content{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:3rem;
+  max-width:700px;
+  max-height:80vh;
+  overflow-y:auto;
+  position:relative;
+  animation:modalIn 0.3s ease-out;
+}
+@keyframes modalIn{
+  from{opacity:0;transform:scale(0.95) translateY(20px)}
+  to{opacity:1;transform:scale(1) translateY(0)}
+}
+.modal-close{
+  position:absolute;
+  top:1.5rem;right:1.5rem;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  color:var(--text);
+  width:36px;height:36px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:1.2rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all 0.3s;
+}
+.modal-close:hover{
+  background:rgba(139,92,246,0.2);
+  border-color:rgba(139,92,246,0.4);
+}
+.modal-badge{
+  font-family:var(--mono);
+  font-size:0.7rem;
+  font-weight:700;
+  color:var(--purple2);
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  margin-bottom:0.8rem;
+}
+.modal-title{
+  font-size:1.8rem;
+  font-weight:700;
+  margin-bottom:1.5rem;
+}
+.modal-desc{
+  font-size:0.95rem;
+  color:var(--muted);
+  line-height:1.8;
+  margin-bottom:2rem;
+}
+.modal-section{
+  margin-bottom:2rem;
+}
+.modal-section-title{
+  font-family:var(--mono);
+  font-size:0.8rem;
+  font-weight:700;
+  color:var(--blue2);
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  margin-bottom:1rem;
+}
+.modal-list{
+  list-style:none;
+}
+.modal-list li{
+  font-size:0.9rem;
+  color:var(--muted);
+  padding:0.6rem 0;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  display:flex;
+  align-items:flex-start;
+  gap:0.8rem;
+}
+.modal-list li::before{
+  content:'→';
+  color:var(--purple2);
+  font-weight:700;
+  flex-shrink:0;
+}
+
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem}
+  .nav-items{gap:0.2rem}
+  .nav-btn{padding:0.4rem 0.6rem;font-size:0.65rem}
+  #home,.inner{padding-left:1.5rem;padding-right:1.5rem}
+  .hero-h1{font-size:2rem}
+  .yt-hero{grid-template-columns:1fr;text-align:center}
+  .yt-logo{margin:0 auto}
+  footer{flex-direction:column;gap:1.5rem;text-align:center}
+  .modal-content{padding:2rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">ALGOQUANT</div>
+  <div class="nav-items">
+    <button class="nav-btn active" onclick="showPage('home')">Home</button>
+    <button class="nav-btn" onclick="showPage('strategies')">Strategies</button>
+    <button class="nav-btn" onclick="showPage('bots')">Bots</button>
+    <button class="nav-btn" onclick="showPage('saas')">SaaS</button>
+    <button class="nav-btn" onclick="showPage('freelance')">Freelance</button>
+    <button class="nav-btn" onclick="showPage('courses')">Courses</button>
+    <button class="nav-btn" onclick="showPage('youtube')">YouTube</button>
+  </div>
+  <button class="nav-contact" onclick="window.location='mailto:quantalphatrading12@gmail.com'">CONTACT →</button>
+</nav>
+
+<!-- HOME -->
+<div id="home" class="page active">
+  <div class="hero-badge">Systematic Trading Systems</div>
+  <h1 class="hero-h1">
+    I build <span class="grad-text">algorithmic</span><br>
+    trading systems that<br>
+    <span class="grad-text">actually work.</span>
+  </h1>
+  <p class="hero-sub">
+    Quant engineer building automated trading systems for crypto, forex, and futures. 
+    Not indicators. Not signals. Real systems — backtested on real data, zero lookahead bias, proper risk controls.
+  </p>
+  <div class="hero-code">
+    <span class="c1">$</span> stack: Python · Pine Script · MQL5 · C++<br>
+    <span class="c2">→</span> Crypto bots (Binance, Bybit, Hyperliquid)<br>
+    <span class="c2">→</span> Forex EAs (MT4/MT5, prop firm ready)<br>
+    <span class="c2">→</span> Full backtesting pipelines<br>
+    <span class="c2">→</span> Monte Carlo risk simulation<br>
+    <span class="c2">→</span> Statistical arbitrage systems<span class="cursor"></span>
+  </div>
+  <div class="stack-row">
+    <span class="stack-tag">Python</span>
+    <span class="stack-tag">Pine Script</span>
+    <span class="stack-tag">MQL5</span>
+    <span class="stack-tag">C++</span>
+    <span class="stack-tag">Backtesting</span>
+    <span class="stack-tag">Monte Carlo</span>
+    <span class="stack-tag">Stat Arb</span>
+    <span class="stack-tag">DeFi</span>
+    <span class="stack-tag">Prop Firm</span>
+  </div>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="showPage('strategies')">Explore Strategies</button>
+    <a href="https://youtube.com/@AlgoQuantTrading" target="_blank" class="btn-secondary">YouTube Channel ↗</a>
+  </div>
+  <div class="spec-grid">
+    <div class="spec-card" onclick="showPage('strategies')">
+      <div class="spec-icon">📊</div>
+      <div class="spec-title">20+ Trading Strategies</div>
+      <div class="spec-desc">CFD, Forex, Futures, Crypto — each backtested and validated</div>
+    </div>
+    <div class="spec-card" onclick="showPage('bots')">
+      <div class="spec-icon">🤖</div>
+      <div class="spec-title">Automated Bots</div>
+      <div class="spec-desc">MT5 EAs, Binance bots, DeFi strategies — fully automated</div>
+    </div>
+    <div class="spec-card" onclick="showPage('saas')">
+      <div class="spec-icon">⚡</div>
+      <div class="spec-title">SaaS Tools</div>
+      <div class="spec-desc">Backtest validator, Python→MQL5 converter, idea→bot pipeline</div>
+    </div>
+    <div class="spec-card" onclick="showPage('freelance')">
+      <div class="spec-icon">💼</div>
+      <div class="spec-title">Freelance Services</div>
+      <div class="spec-desc">Custom strategies, bot development, backtesting, Pine Script</div>
+    </div>
+  </div>
+</div>
+
+<!-- STRATEGIES -->
+<div id="strategies" class="page">
+  <div class="inner">
+    <div class="page-badge">Research & Development</div>
+    <h1 class="page-h1">Trading <span class="grad-text">Strategies</span></h1>
+    <p class="page-sub">20+ algorithmic strategies across CFD, Forex, Futures, and Crypto. Each built from first principles, backtested with walk-forward validation, and stress-tested with Monte Carlo simulation.</p>
+    
+    <div class="subnav">
+      <button class="subnav-btn active" onclick="showSub('strategies','cfd')">CFD (5)</button>
+      <button class="subnav-btn" onclick="showSub('strategies','forex')">Forex (5)</button>
+      <button class="subnav-btn" onclick="showSub('strategies','futures')">Futures (5)</button>
+      <button class="subnav-btn" onclick="showSub('strategies','crypto')">Crypto (5)</button>
+    </div>
+
+    <div id="strategies-cfd" class="subpage active">
+      <div class="cat-label">CFD Strategies</div>
+      <div class="cards">
+        <div class="card" onclick="openModal('Triple EMA + ATR Stack','TREND','Multi-timeframe trend following system using 9/21/55 EMA alignment with ATR(14) dynamic stops. Entry on full stack crossover with percentage-risk lot sizing. No fixed pips — adapts to volatility automatically.','Regime Detection,Volatility Filter,Dynamic Position Sizing,ATR Trailing Stop,Multi-Timeframe Confirmation')">
+          <div class="card-header"><div class="card-tag tag-blue">TREND</div></div>
+          <div class="card-title">Triple EMA + ATR Stack</div>
+          <div class="card-desc">9/21/55 EMA alignment with ATR(14) dynamic SL/TP. Entry on full stack crossover, percentage-risk lot sizing, no fixed pips.</div>
+        </div>
+        <div class="card" onclick="openModal('Volatility Breakout System','BREAKOUT','Identifies compression phases using ATR percentile ranking. Trades expansion with momentum confirmation. Auto-filters low-volatility sessions to avoid false breakouts.','ATR Percentile,Momentum Filter,Session Filter,Volume Confirmation,Dynamic Range Calculation')">
+          <div class="card-header"><div class="card-tag tag-blue">BREAKOUT</div></div>
+          <div class="card-title">Volatility Breakout System</div>
+          <div class="card-desc">ATR percentile ranking identifies compression phases. Trades expansion with momentum confirmation. Auto-filters low-volatility sessions.</div>
+        </div>
+        <div class="card" onclick="openModal('Statistical Mean Reversion','MEAN REV','Z-score entry at 2σ deviation from rolling mean. Bollinger confirmation, hard SL at 3σ. Optimized for range-bound instruments with automatic regime detection.','Z-Score Entry,Bollinger Bands,Regime Detection,Mean Reversion,Hard Stop Loss')">
+          <div class="card-header"><div class="card-tag tag-purple">MEAN REV</div></div>
+          <div class="card-title">Statistical Mean Reversion</div>
+          <div class="card-desc">Z-score entry at 2σ deviation from rolling mean. Bollinger confirmation, hard SL at 3σ. Optimized for range-bound instruments.</div>
+        </div>
+        <div class="card" onclick="openModal('Order Flow Imbalance','MICRO','Detects bid/ask volume imbalance to anticipate short-term direction. Delta divergence confirmation required before any entry is taken. High-frequency micro-structure analysis.','Order Flow,Delta Divergence,Bid/Ask Imbalance,Micro-Structure,High-Frequency')">
+          <div class="card-header"><div class="card-tag tag-purple">MICRO</div></div>
+          <div class="card-title">Order Flow Imbalance</div>
+          <div class="card-desc">Detects bid/ask volume imbalance to anticipate short-term direction. Delta divergence confirmation required before any entry is taken.</div>
+        </div>
+        <div class="card" onclick="openModal('Multi-Timeframe Momentum','MOMENTUM','H4 + H1 trend alignment, 15M pullback entry. ATR trailing stop, 1:2.5 minimum RR filter. Clean, rules-based, no discretion. Multi-timeframe confirmation chain.','Multi-Timeframe,Trend Alignment,Pullback Entry,ATR Trailing,RR Filter')">
+          <div class="card-header"><div class="card-tag tag-blue">MOMENTUM</div></div>
+          <div class="card-title">Multi-Timeframe Momentum</div>
+          <div class="card-desc">H4 + H1 trend alignment, 15M pullback entry. ATR trailing stop, 1:2.5 minimum RR filter. Clean, rules-based, no discretion.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="strategies-forex" class="subpage">
+      <div class="cat-label">Forex Strategies</div>
+      <div class="cards">
+        <div class="card" onclick="openModal('London Open Breakout EA','SESSION','Range built 06:00–08:00 GMT, breakout entry with volume confirmation. Auto-close before NY close. Runs on major pairs cleanly.','Session Timing,Range Detection,Volume Confirmation,Auto-Close,Major Pairs')">
+          <div class="card-header"><div class="card-tag tag-blue">SESSION</div></div>
+          <div class="card-title">London Open Breakout EA</div>
+          <div class="card-desc">Range built 06:00–08:00 GMT, breakout entry with volume confirmation. Auto-close before NY close. Runs on major pairs cleanly.</div>
+        </div>
+        <div class="card" onclick="openModal('Carry Trade + Momentum Filter','MACRO','Systematic carry on high-yield pairs filtered by momentum regime. Reduces exposure during risk-off using VIX proxy signal.','Carry Trade,Momentum Filter,Risk-Off Detection,VIX Proxy,High-Yield Pairs')">
+          <div class="card-header"><div class="card-tag tag-purple">MACRO</div></div>
+          <div class="card-title">Carry Trade + Momentum Filter</div>
+          <div class="card-desc">Systematic carry on high-yield pairs filtered by momentum regime. Reduces exposure during risk-off using VIX proxy signal.</div>
+        </div>
+        <div class="card" onclick="openModal('FX Correlation Pairs Arb','STAT ARB','Exploits EURUSD/GBPUSD temporary divergence. Z-score entry, cointegration-validated, delta-neutral positioning. Mean reversion engine.','Pairs Trading,Cointegration,Z-Score,Delta-Neutral,Mean Reversion')">
+          <div class="card-header"><div class="card-tag tag-purple">STAT ARB</div></div>
+          <div class="card-title">FX Correlation Pairs Arb</div>
+          <div class="card-desc">Exploits EURUSD/GBPUSD temporary divergence. Z-score entry, cointegration-validated, delta-neutral positioning. Mean reversion engine.</div>
+        </div>
+        <div class="card" onclick="openModal('News Volatility Straddle','EVENT','Enters both directions before high-impact events, cancels losing side on first fill. Built for NFP, CPI, FOMC on EURUSD and USDJPY.','News Trading,Straddle Entry,Event Filter,Auto-Cancel,High-Impact')">
+          <div class="card-header"><div class="card-tag tag-blue">EVENT</div></div>
+          <div class="card-title">News Volatility Straddle</div>
+          <div class="card-desc">Enters both directions before high-impact events, cancels losing side on first fill. Built for NFP, CPI, FOMC on EURUSD and USDJPY.</div>
+        </div>
+        <div class="card" onclick="openModal('Prop Firm Safe EA','PROP','Tuned for FTMO rules. Daily DD guard, drawdown pauser, news filter, weekend close. Built to keep the funded account, not just pass the test.','Prop Firm,Daily DD Guard,Drawdown Pauser,News Filter,Weekend Close')">
+          <div class="card-header"><div class="card-tag tag-green">PROP</div></div>
+          <div class="card-title">Prop Firm Safe EA</div>
+          <div class="card-desc">Tuned for FTMO rules. Daily DD guard, drawdown pauser, news filter, weekend close. Built to keep the funded account, not just pass the test.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="strategies-futures" class="subpage">
+      <div class="cat-label">Futures Strategies</div>
+      <div class="cards">
+        <div class="card" onclick="openModal('Funding Rate Arbitrage','ARB','Long spot / short perp when funding exceeds threshold. Delta-neutral by construction. Automated rebalancing on basis drift.','Funding Rate,Delta-Neutral,Basis Drift,Auto-Rebalance,Spot-Perp')">
+          <div class="card-header"><div class="card-tag tag-purple">ARB</div></div>
+          <div class="card-title">Funding Rate Arbitrage</div>
+          <div class="card-desc">Long spot / short perp when funding exceeds threshold. Delta-neutral by construction. Automated rebalancing on basis drift.</div>
+        </div>
+        <div class="card" onclick="openModal('Basis Cash & Carry','NEUTRAL','Spot vs quarterly futures premium capture on BTC and ETH. Hold to expiry for guaranteed convergence. Kelly criterion sizing.','Cash & Carry,Basis Trading,Premium Capture,Expiry Convergence,Kelly Sizing')">
+          <div class="card-header"><div class="card-tag tag-blue">NEUTRAL</div></div>
+          <div class="card-title">Basis Cash & Carry</div>
+          <div class="card-desc">Spot vs quarterly futures premium capture on BTC and ETH. Hold to expiry for guaranteed convergence. Kelly criterion sizing.</div>
+        </div>
+        <div class="card" onclick="openModal('Liquidation Cascade Hunter','EVENT','Open interest + funding divergence detects over-leveraged positioning. Positions ahead of cascade zones. Tight risk management.','Open Interest,Funding Divergence,Cascade Detection,Leverage Analysis,Risk Management')">
+          <div class="card-header"><div class="card-tag tag-purple">EVENT</div></div>
+          <div class="card-title">Liquidation Cascade Hunter</div>
+          <div class="card-desc">Open interest + funding divergence detects over-leveraged positioning. Positions ahead of cascade zones. Tight risk management.</div>
+        </div>
+        <div class="card" onclick="openModal('Cross-Venue Lead/Lag','LATENCY','Exploits Binance price leadership over smaller venues. Statistical lag measured and traded on ETH and SOL perpetuals.','Lead/Lag,Cross-Venue,Statistical Lag,Binance Leadership,Perpetuals')">
+          <div class="card-header"><div class="card-tag tag-blue">LATENCY</div></div>
+          <div class="card-title">Cross-Venue Lead/Lag</div>
+          <div class="card-desc">Exploits Binance price leadership over smaller venues. Statistical lag measured and traded on ETH and SOL perpetuals.</div>
+        </div>
+        <div class="card" onclick="openModal('Term Structure Roll Yield','YIELD','Harvests roll yield from futures curves in contango and backwardation. Sized by curve steepness, rebalanced weekly.','Roll Yield,Term Structure,Contango,Backwardation,Weekly Rebalance')">
+          <div class="card-header"><div class="card-tag tag-purple">YIELD</div></div>
+          <div class="card-title">Term Structure Roll Yield</div>
+          <div class="card-desc">Harvests roll yield from futures curves in contango and backwardation. Sized by curve steepness, rebalanced weekly.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="strategies-crypto" class="subpage">
+      <div class="cat-label">Crypto Strategies</div>
+      <div class="cards">
+        <div class="card" onclick="openModal('BTC 5-Min Binary Direction','PRICE ACTION','Price action model predicting BTC direction over 5-minute windows. EMA stack + ATR regime filter + volume confirmation. Chainlink data.','Price Action,Binary Direction,EMA Stack,ATR Filter,Chainlink Data')">
+          <div class="card-header"><div class="card-tag tag-blue">PRICE ACTION</div></div>
+          <div class="card-title">BTC 5-Min Binary Direction</div>
+          <div class="card-desc">Price action model predicting BTC direction over 5-minute windows. EMA stack + ATR regime filter + volume confirmation. Chainlink data.</div>
+        </div>
+        <div class="card" onclick="openModal('Altcoin Beta Rotation','REL VALUE','Ranks altcoins by beta-adjusted momentum vs BTC. Long top decile, short bottom. Rebalances every 4H, correlation-aware sizing.','Beta Rotation,Momentum Ranking,Decile Selection,4H Rebalance,Correlation Sizing')">
+          <div class="card-header"><div class="card-tag tag-purple">REL VALUE</div></div>
+          <div class="card-title">Altcoin Beta Rotation</div>
+          <div class="card-desc">Ranks altcoins by beta-adjusted momentum vs BTC. Long top decile, short bottom. Rebalances every 4H, correlation-aware sizing.</div>
+        </div>
+        <div class="card" onclick="openModal('On-Chain Whale Signal','ON-CHAIN','Tracks large wallet movements and exchange inflows/outflows. Signals when whale accumulation diverges from price. Hyperliquid execution.','Whale Tracking,Exchange Flows,Accumulation Divergence,On-Chain,Hyperliquid')">
+          <div class="card-header"><div class="card-tag tag-purple">ON-CHAIN</div></div>
+          <div class="card-title">On-Chain Whale Signal</div>
+          <div class="card-desc">Tracks large wallet movements and exchange inflows/outflows. Signals when whale accumulation diverges from price. Hyperliquid execution.</div>
+        </div>
+        <div class="card" onclick="openModal('CEX vs DEX Funding Divergence','CROSS-VENUE','Monitors funding rate spread between Binance perps and GMX/Hyperliquid. Trades mean reversion with automated on-chain execution.','Funding Spread,CEX-DEX,Mean Reversion,On-Chain Execution,GMX/Hyperliquid')">
+          <div class="card-header"><div class="card-tag tag-blue">CROSS-VENUE</div></div>
+          <div class="card-title">CEX vs DEX Funding Divergence</div>
+          <div class="card-desc">Monitors funding rate spread between Binance perps and GMX/Hyperliquid. Trades mean reversion with automated on-chain execution.</div>
+        </div>
+        <div class="card" onclick="openModal('Stablecoin Depeg Monitor','EVENT','Real-time USDC/USDT/DAI peg deviation monitoring. Automated trades on depeg events with predefined recovery thesis and hard time-stop.','Depeg Monitor,Peg Deviation,Recovery Thesis,Time-Stop,Stablecoins')">
+          <div class="card-header"><div class="card-tag tag-purple">EVENT</div></div>
+          <div class="card-title">Stablecoin Depeg Monitor</div>
+          <div class="card-desc">Real-time USDC/USDT/DAI peg deviation monitoring. Automated trades on depeg events with predefined recovery thesis and hard time-stop.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTS -->
+<div id="bots" class="page">
+  <div class="inner">
+    <div class="page-badge">Automated Systems</div>
+    <h1 class="page-h1">Trading <span class="grad-text">Bots</span></h1>
+    <p class="page-sub">Live automated bots for MT5, Binance, and DeFi. First EA is free. Paid versions coming soon.</p>
+    
+    <div class="subnav">
+      <button class="subnav-btn active" onclick="showSub('bots','mt5')">MT5 EAs</button>
+      <button class="subnav-btn" onclick="showSub('bots','binance')">Binance</button>
+      <button class="subnav-btn" onclick="showSub('bots','defi')">DeFi</button>
+      <button class="subnav-btn" onclick="showSub('bots','sell')">Bots for Sale</button>
+    </div>
+
+    <div id="bots-mt5" class="subpage active">
+      <div class="cat-label">MT5 Expert Advisors</div>
+      <div class="cards">
+        <div class="card" onclick="openModal('Triple EMA + ATR Bot','FREE NOW','The flagship free EA. 9/21/55 EMA crossover with ATR dynamic SL/TP and % risk lot sizing. Demo account. Activation key via YouTube subscription.','Triple EMA,ATR Stops,Risk Sizing,Free EA,YouTube Activation')">
+          <div class="card-header"><div class="card-tag tag-green">FREE NOW</div></div>
+          <div class="card-title">Triple EMA + ATR Bot</div>
+          <div class="card-desc">The flagship free EA. 9/21/55 EMA crossover with ATR dynamic SL/TP and % risk lot sizing. Demo account. Activation key via YouTube subscription.</div>
+          <a href="https://youtube.com/@AlgoQuantTrading" target="_blank" class="card-link">→ Get it free via YouTube</a>
+        </div>
+        <div class="card" onclick="openModal('Prop Firm Funded Bot v2','COMING SOON','Conservative EA tuned for funded accounts. Strict daily DD guard, drawdown pauser, news filter, weekend protection. Paid version.','Prop Firm,Daily DD,Drawdown Pauser,News Filter,Weekend Protection')">
+          <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+          <div class="card-title">Prop Firm Funded Bot v2</div>
+          <div class="card-desc">Conservative EA tuned for funded accounts. Strict daily DD guard, drawdown pauser, news filter, weekend protection. Paid version.</div>
+        </div>
+        <div class="card" onclick="openModal('London Breakout EA Pro','COMING SOON','Full session-based breakout system with adaptive range calculation, spread filter, and smart trailing. Multi-pair optimized.','London Session,Breakout,Adaptive Range,Spread Filter,Multi-Pair')">
+          <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+          <div class="card-title">London Breakout EA Pro</div>
+          <div class="card-desc">Full session-based breakout system with adaptive range calculation, spread filter, and smart trailing. Multi-pair optimized.</div>
+        </div>
+        <div class="card" onclick="openModal('Multi-TF Momentum EA','COMING SOON','H4/H1/15M alignment system. Full signal confirmation chain, ATR trailing, dynamic lot sizing. Works on forex and indices.','Multi-Timeframe,Momentum,Signal Chain,ATR Trailing,Dynamic Sizing')">
+          <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+          <div class="card-title">Multi-TF Momentum EA</div>
+          <div class="card-desc">H4/H1/15M alignment system. Full signal confirmation chain, ATR trailing, dynamic lot sizing. Works on forex and indices.</div>
+        </div>
+        <div class="card" onclick="openModal('Stat Mean Reversion EA','COMING SOON','Z-score based mean reversion on range-bound pairs. Bollinger confirmation, automatic regime detection, position scaling.','Z-Score,Mean Reversion,Bollinger,Regime Detection,Position Scaling')">
+          <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+          <div class="card-title">Stat Mean Reversion EA</div>
+          <div class="card-desc">Z-score based mean reversion on range-bound pairs. Bollinger confirmation, automatic regime detection, position scaling.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="bots-binance" class="subpage">
+      <div class="cat-label">Binance Strategy Bots</div>
+      <div class="cards">
+        <div class="card" onclick="openModal('Funding Rate Arb Bot','COMING SOON','Automated delta-neutral funding rate harvesting across Binance and Bybit. Monitors rates, enters/exits automatically, rebalances on drift.','Funding Arb,Delta-Neutral,Binance/Bybit,Auto-Rebalance,Rate Monitoring')">
+          <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+          <div class="card-title">Funding Rate Arb Bot</div>
+          <div class="card-desc">Automated delta-neutral funding rate harvesting across Binance and Bybit. Monitors rates, enters/exits automatically, rebalances on drift.</div>
+        </div>
+        <div class="card" onclick="openModal('Altcoin Momentum Rotator','COMING SOON','Ranks 50 altcoins by beta-adjusted momentum, executes rebalancing every 4H via Binance API. Full automation.','Momentum Ranking,50 Altcoins,4H Rebalance,Binance API,Full Automation')">
+          <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+          <div class="card-title">Altcoin Momentum Rotator</div>
+          <div class="card-desc">Ranks 50 altcoins by beta-adjusted momentum, executes rebalancing every 4H via Binance API. Full automation.</div>
+        </div>
+        <div class="card" onclick="openModal('Liquidation Cascade Bot','COMING SOON','Real-time open interest scanning. Detects over-leveraged positioning, trades ahead of cascade events with hard risk controls.','Open Interest,Cascade Detection,Leverage Analysis,Risk Controls,Real-Time')">
+          <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+          <div class="card-title">Liquidation Cascade Bot</div>
+          <div class="card-desc">Real-time open interest scanning. Detects over-leveraged positioning, trades ahead of cascade events with hard risk controls.</div>
+        </div>
+        <div class="card" onclick="openModal('BTC Binary Direction Bot','COMING SOON','5-minute BTC direction prediction. Trades Up/Down markets using price action signals from Chainlink-sourced data.','BTC Prediction,5-Min Windows,Binary Markets,Price Action,Chainlink Data')">
+          <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+          <div class="card-title">BTC Binary Direction Bot</div>
+          <div class="card-desc">5-minute BTC direction prediction. Trades Up/Down markets using price action signals from Chainlink-sourced data.</div>
+        </div>
+        <div class="card" onclick="openModal('Basis Cash & Carry Bot','COMING SOON','Spot vs quarterly futures premium capture on BTC/ETH. Automated entry, hold to expiry, guaranteed convergence strategy.','Cash & Carry,Premium Capture,BTC/ETH,Expiry Hold,Convergence')">
+          <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+          <div class="card-title">Basis Cash & Carry Bot</div>
+          <div class="card-desc">Spot vs quarterly futures premium capture on BTC/ETH. Automated entry, hold to expiry, guaranteed convergence strategy.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="bots-defi" class="subpage">
+      <div class="cat-label">DeFi Strategy Bots</div>
+      <div class="cards">
+        <div class="card" onclick="openModal('Delta-Neutral Yield Farm','COMING SOON','Long spot ETH + short ETH perp to harvest funding yield with zero directional exposure. Automated rebalancing on delta drift.','Delta-Neutral,Yield Farming,ETH Perp,Auto-Rebalance,Delta Drift')">
+          <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+          <div class="card-title">Delta-Neutral Yield Farm</div>
+          <div class="card-desc">Long spot ETH + short ETH perp to harvest funding yield with zero directional exposure. Automated rebalancing on delta drift.</div>
+        </div>
+        <div class="card" onclick="openModal('Morpho Vault Rotator','COMING SOON','Automatically rotates capital between Morpho vaults to maximize yield. Rate monitoring, gas optimization, weekly rebalancing.','Morpho Vaults,Yield Rotation,Rate Monitoring,Gas Optimization,Weekly Rebalance')">
+          <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+          <div class="card-title">Morpho Vault Rotator</div>
+          <div class="card-desc">Automatically rotates capital between Morpho vaults to maximize yield. Rate monitoring, gas optimization, weekly rebalancing.</div>
+        </div>
+        <div class="card" onclick="openModal('Cross-DEX Arbitrage Bot','COMING SOON','Same-block arbitrage between Uniswap, Sushiswap, Curve using flash loans. MEV-protected via Flashbots.','Cross-DEX,Same-Block,Flash Loans,MEV Protection,Flashbots')">
+          <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+          <div class="card-title">Cross-DEX Arbitrage Bot</div>
+          <div class="card-desc">Same-block arbitrage between Uniswap, Sushiswap, Curve using flash loans. MEV-protected via Flashbots.</div>
+        </div>
+        <div class="card" onclick="openModal('Stablecoin Rate Arb','COMING SOON','Borrows from lowest-rate protocol (Aave/Morpho) and lends at highest rate. Instant rotation on spread across 5 protocols.','Rate Arbitrage,Aave/Morpho,Instant Rotation,5 Protocols,Spread Monitoring')">
+          <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+          <div class="card-title">Stablecoin Rate Arb</div>
+          <div class="card-desc">Borrows from lowest-rate protocol (Aave/Morpho) and lends at highest rate. Instant rotation on spread across 5 protocols.</div>
+        </div>
+        <div class="card" onclick="openModal('Pendle PT Yield Locker','COMING SOON','Buys discounted Principal Tokens at favorable yield, holds to maturity. Yield curve modeling drives entry timing decisions.','Pendle PT,Yield Curve,Discounted Entry,Maturity Hold,Timing Model')">
+          <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+          <div class="card-title">Pendle PT Yield Locker</div>
+          <div class="card-desc">Buys discounted Principal Tokens at favorable yield, holds to maturity. Yield curve modeling drives entry timing decisions.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="bots-sell" class="subpage">
+      <div class="cat-label">Bots for Sale</div>
+      <div class="cards">
+        <div class="card" onclick="openModal('Triple EMA + ATR Bot','AVAILABLE NOW','The flagship bot. 9/21/55 EMA crossover with ATR dynamic SL/TP and % risk lot sizing. Full source code, activation key system, lifetime updates.','Triple EMA,ATR Stops,Risk Sizing,Source Code,Lifetime Updates')">
+          <div class="card-header"><div class="card-tag tag-green">AVAILABLE NOW</div></div>
+          <div class="card-title">Triple EMA + ATR Bot</div>
+          <div class="card-desc">The flagship bot. 9/21/55 EMA crossover with ATR dynamic SL/TP and % risk lot sizing. Full source code, activation key system, lifetime updates.</div>
+          <a href="mailto:quantalphatrading12@gmail.com?subject=Triple+EMA+Bot+Purchase" class="card-link">→ Contact to purchase</a>
+        </div>
+        <div class="card" onclick="openModal('Prop Firm Funded Bot v2','COMING SOON','Conservative EA tuned for funded accounts. Strict daily DD guard, drawdown pauser, news filter, weekend protection.','Prop Firm,Daily DD,Drawdown Pauser,News Filter,Weekend Protection')">
+          <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+          <div class="card-title">Prop Firm Funded Bot v2</div>
+          <div class="card-desc">Conservative EA tuned for funded accounts. Strict daily DD guard, drawdown pauser, news filter, weekend protection.</div>
+        </div>
+        <div class="card" onclick="openModal('London Breakout EA Pro','COMING SOON','Full session-based breakout system with adaptive range calculation, spread filter, and smart trailing. Multi-pair optimized.','London Session,Breakout,Adaptive Range,Spread Filter,Multi-Pair')">
+          <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+          <div class="card-title">London Breakout EA Pro</div>
+          <div class="card-desc">Full session-based breakout system with adaptive range calculation, spread filter, and smart trailing. Multi-pair optimized.</div>
+        </div>
+        <div class="card" onclick="openModal('Multi-TF Momentum EA','COMING SOON','H4/H1/15M alignment system. Full signal confirmation chain, ATR trailing, dynamic lot sizing. Works on forex and indices.','Multi-Timeframe,Momentum,Signal Chain,ATR Trailing,Dynamic Sizing')">
+          <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+          <div class="card-title">Multi-TF Momentum EA</div>
+          <div class="card-desc">H4/H1/15M alignment system. Full signal confirmation chain, ATR trailing, dynamic lot sizing. Works on forex and indices.</div>
+        </div>
+        <div class="card" onclick="openModal('Stat Mean Reversion EA','COMING SOON','Z-score based mean reversion on range-bound pairs. Bollinger confirmation, automatic regime detection, position scaling.','Z-Score,Mean Reversion,Bollinger,Regime Detection,Position Scaling')">
+          <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+          <div class="card-title">Stat Mean Reversion EA</div>
+          <div class="card-desc">Z-score based mean reversion on range-bound pairs. Bollinger confirmation, automatic regime detection, position scaling.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SAAS -->
+<div id="saas" class="page">
+  <div class="inner">
+    <div class="page-badge">Products</div>
+    <h1 class="page-h1">SaaS <span class="grad-text">Tools</span></h1>
+    <p class="page-sub">Three tools built from real trading pain points. Each solves a problem I ran into myself — and couldn't find a good solution for.</p>
+    
+    <div class="saas-grid">
+      <div class="saas-card" onclick="openModal('Backtest Validator','COMING SOON','Upload your backtest report. Get an instant audit: overfitting score, lookahead bias detection, walk-forward validation, Monte Carlo stress test, and a plain-English verdict. Know if your edge is real before you risk a single dollar.','Overfitting Detection,Lookahead Bias,Walk-Forward Validation,Monte Carlo Stress Test,Plain-English Verdict')">
+        <div class="card-tag tag-soon" style="position:absolute;top:1.5rem;right:1.5rem">COMING SOON</div>
+        <div class="saas-num">01</div>
+        <div class="saas-name">Backtest Validator</div>
+        <div class="saas-mono">// kill the curve-fitting</div>
+        <div class="saas-desc">Upload your backtest report. Get an instant audit: overfitting score, lookahead bias detection, walk-forward validation, Monte Carlo stress test, and a plain-English verdict. Know if your edge is real before you risk a single dollar.</div>
+      </div>
+      <div class="saas-card" onclick="openModal('Python → MQL5 Converter','COMING SOON','Paste your Python trading strategy. Get production-ready MQL5 Expert Advisor code in seconds. Handles indicators, order logic, risk management, and error handling automatically. No manual translation ever again.','Python to MQL5,Instant Conversion,Indicator Translation,Order Logic,Risk Management')">
+        <div class="card-tag tag-soon" style="position:absolute;top:1.5rem;right:1.5rem">COMING SOON</div>
+        <div class="saas-num">02</div>
+        <div class="saas-name">Python → MQL5 Converter</div>
+        <div class="saas-mono">// paste python. get mql5. instantly.</div>
+        <div class="saas-desc">Paste your Python trading strategy. Get production-ready MQL5 Expert Advisor code in seconds. Handles indicators, order logic, risk management, and error handling automatically. No manual translation ever again.</div>
+      </div>
+      <div class="saas-card" onclick="openModal('Idea → Live Bot Pipeline','COMING SOON - SECRET SAUCE','Describe your strategy in plain English. The system builds the logic visually, you confirm the rules, it generates the code and backtests automatically. From idea to deployable bot — zero coding required. This is the secret sauce.','Natural Language,Visual Logic,Code Generation,Auto-Backtest,Zero Coding')">
+        <div class="card-tag tag-soon" style="position:absolute;top:1.5rem;right:1.5rem">COMING SOON - SECRET SAUCE</div>
+        <div class="saas-num">03</div>
+        <div class="saas-name">Idea → Live Bot Pipeline</div>
+        <div class="saas-mono">// describe it. see it. deploy it.</div>
+        <div class="saas-desc">Describe your strategy in plain English. The system builds the logic visually, you confirm the rules, it generates the code and backtests automatically. From idea to deployable bot — zero coding required. This is the secret sauce.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FREELANCE -->
+<div id="freelance" class="page">
+  <div class="inner">
+    <div class="page-badge">Work With Me</div>
+    <h1 class="page-h1">Freelance <span class="grad-text">Services</span></h1>
+    <p class="page-sub">Fixed-scope gigs. Clear deliverables. No ambiguity. Contact me before we start — I only take projects I can execute properly.</p>
+    
+    <div class="gig-grid">
+      <div class="gig-card">
+        <div class="gig-num">GIG — 01</div>
+        <div class="gig-title">Custom CFD Trading Strategy</div>
+        <div class="gig-desc">I build a unique algorithmic strategy for your instrument and risk profile. Includes full backtest report, parameter logic explanation, and delivery in MQL5 or Python. No recycled templates — built from scratch.</div>
+        <a href="mailto:quantalphatrading12@gmail.com?subject=Gig+01+-+Custom+Strategy" class="gig-email">→ quantalphatrading12@gmail.com</a>
+      </div>
+      <div class="gig-card">
+        <div class="gig-num">GIG — 02</div>
+        <div class="gig-title">Strategy → Live MT5 Bot</div>
+        <div class="gig-desc">You have a trading idea or existing strategy. I convert it into a fully automated MT5 Expert Advisor. Handles entries, exits, SL/TP, lot sizing, and error management. Ready to drop on any chart immediately.</div>
+        <a href="mailto:quantalphatrading12@gmail.com?subject=Gig+02+-+MT5+Conversion" class="gig-email">→ quantalphatrading12@gmail.com</a>
+      </div>
+      <div class="gig-card">
+        <div class="gig-num">GIG — 03</div>
+        <div class="gig-title">Professional Backtest</div>
+        <div class="gig-desc">I backtest your strategy properly. Walk-forward validation, out-of-sample testing, Monte Carlo simulation, full risk metrics report — Sharpe, max DD, recovery factor. A real answer, not a pretty equity curve.</div>
+        <a href="mailto:quantalphatrading12@gmail.com?subject=Gig+03+-+Backtest" class="gig-email">→ quantalphatrading12@gmail.com</a>
+      </div>
+      <div class="gig-card">
+        <div class="gig-num">GIG — 04</div>
+        <div class="gig-title">TradingView Pine Script</div>
+        <div class="gig-desc">Custom indicators, strategy scripts, or alert systems in Pine Script. From simple EMA overlays to complex multi-condition systems with full alert integration and clean visual output.</div>
+        <a href="mailto:quantalphatrading12@gmail.com?subject=Gig+04+-+Pine+Script" class="gig-email">→ quantalphatrading12@gmail.com</a>
+      </div>
+      <div class="gig-card">
+        <div class="gig-num">GIG — 05</div>
+        <div class="gig-title">Prop Firm Funded Account Bot</div>
+        <div class="gig-desc">Not a challenge-passer. A bot built to trade your funded account consistently. Strict daily DD limits, drawdown pauser, news filter, weekend protection. Built to keep the account long-term. Contact for details.</div>
+        <a href="mailto:quantalphatrading12@gmail.com?subject=Gig+05+-+Prop+Firm+Bot" class="gig-email">→ quantalphatrading12@gmail.com</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COURSES -->
+<div id="courses" class="page">
+  <div class="inner">
+    <div class="page-badge">Education</div>
+    <h1 class="page-h1">Courses <span class="grad-text">Coming Soon</span></h1>
+    <p class="page-sub">Structured programs for traders serious about going systematic. Subscribe to YouTube to get notified first when they drop.</p>
+    
+    <div class="cards">
+      <div class="card">
+        <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+        <div class="card-title">Python for Algo Traders</div>
+        <div class="card-desc">From zero Python to your first live trading bot. Data handling, backtesting, risk management, and API connectivity. No math PhD required.</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+        <div class="card-title">MQL5 Mastery: Build Real EAs</div>
+        <div class="card-desc">MQL5 from scratch. Indicators, Expert Advisors, risk systems, license protection, and distribution. Build and sell your own bots.</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+        <div class="card-title">Backtesting That Actually Works</div>
+        <div class="card-desc">Walk-forward, Monte Carlo, overfitting detection, statistical significance. Stop fooling yourself with beautiful backtest curves that fail live.</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+        <div class="card-title">Statistical Arbitrage Systems</div>
+        <div class="card-desc">Cointegration, pairs trading, funding rate arb, basis trading. Full pipeline from research to live execution. Institutional methodology.</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-tag tag-soon">COMING SOON</div></div>
+        <div class="card-title">Prop Firm Blueprint</div>
+        <div class="card-desc">Pass the challenge AND keep the funded account. Risk rules, strategy selection, drawdown management, bot config for FTMO and MyFundedFX.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- YOUTUBE -->
+<div id="youtube" class="page">
+  <div class="inner">
+    <div class="page-badge">Content</div>
+    <h1 class="page-h1">YouTube <span class="grad-text">Channel</span></h1>
+    <p class="page-sub">Free tutorials, strategy breakdowns, live bot demos. No fluff — just real systems built in public.</p>
+    
+    <div class="yt-hero">
+      <div class="yt-logo">▶</div>
+      <div class="yt-info">
+        <div class="yt-handle">@AlgoQuantTrading</div>
+        <div class="yt-desc">I document everything — the strategies, the code, the backtests, the failures. If you want to learn how to build real automated trading systems from someone actually building them, this is the channel.</div>
+        <div class="yt-tags">
+          <span class="yt-tag">MQL5 Tutorials</span>
+          <span class="yt-tag">Python → MT5</span>
+          <span class="yt-tag">Live Backtests</span>
+          <span class="yt-tag">Free EAs</span>
+          <span class="yt-tag">Quant Finance</span>
+          <span class="yt-tag">Building in Public</span>
+        </div>
+        <a href="https://youtube.com/@AlgoQuantTrading" target="_blank" class="btn-primary" style="display:inline-block">Subscribe Free →</a>
+      </div>
+    </div>
+    
+    <div class="cat-label">What you get for free</div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-header"><div class="card-tag tag-green">FREE</div></div>
+        <div class="card-title">Free MT5 Expert Advisor</div>
+        <div class="card-desc">Subscribe → screenshot → email → get activation key. Triple EMA + ATR bot, runs live on your demo. Zero cost, real automated system.</div>
+        <a href="mailto:quantalphatrading12@gmail.com?subject=EA+Activation+Key" class="card-link">→ Get your key</a>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-tag tag-blue">TUTORIALS</div></div>
+        <div class="card-title">Strategy Breakdowns</div>
+        <div class="card-desc">Every video explains the logic, the math, and the code. No black boxes. You understand exactly what's running on your chart and why.</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-tag tag-purple">CODE</div></div>
+        <div class="card-title">Python → MQL5 Walkthroughs</div>
+        <div class="card-desc">Step-by-step conversion tutorials. Take any Python strategy and automate it on MT5. Full code shown, nothing hidden, nothing paywalled.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-badge" id="modal-badge"></div>
+    <h2 class="modal-title" id="modal-title"></h2>
+    <p class="modal-desc" id="modal-desc"></p>
+    <div class="modal-section">
+      <div class="modal-section-title">Key Features</div>
+      <ul class="modal-list" id="modal-features"></ul>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">ALGOQUANT</div>
+  <div class="footer-links">
+    <a href="https://youtube.com/@AlgoQuantTrading" target="_blank">YouTube</a>
+    <a href="mailto:quantalphatrading12@gmail.com">Email</a>
+    <a href="#" onclick="showPage('freelance')">Freelance</a>
+    <a href="#" onclick="showPage('saas')">SaaS</a>
+  </div>
+</footer>
+
+<script>
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const map={home:0,strategies:1,bots:2,saas:3,freelance:4,courses:5,youtube:6};
+  const btns=document.querySelectorAll('.nav-btn');
+  if(map[id]!==undefined) btns[map[id]].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showSub(page,sub){
+  const pageEl=document.getElementById(page);
+  pageEl.querySelectorAll('.subpage').forEach(s=>s.classList.remove('active'));
+  pageEl.querySelectorAll('.subnav-btn').forEach(b=>b.classList.remove('active'));
+  const target=document.getElementById(page+'-'+sub);
+  if(target) target.classList.add('active');
+  event.target.classList.add('active');
+}
+
+function openModal(title,badge,desc,features){
+  document.getElementById('modal-title').textContent=title;
+  document.getElementById('modal-badge').textContent=badge;
+  document.getElementById('modal-desc').textContent=desc;
+  const featuresList=document.getElementById('modal-features');
+  featuresList.innerHTML='';
+  features.split(',').forEach(f=>{
+    const li=document.createElement('li');
+    li.textContent=f.trim();
+    featuresList.appendChild(li);
+  });
+  document.getElementById('modal').classList.add('active');
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('active');
+}
+
+document.getElementById('modal').addEventListener('click',function(e){
+  if(e.target===this) closeModal();
+});
+</script>
+</body>
+</html>
