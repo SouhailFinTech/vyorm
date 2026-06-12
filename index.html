@@ -114,13 +114,13 @@ nav{
   font-weight:700;
   color:#000;
   background:var(--grad);
-  border:none;
-  cursor:pointer;
+  text-decoration:none;
   padding:0.55rem 1.3rem;
   border-radius:6px;
   transition:all 0.2s;
   box-shadow:0 4px 20px rgba(0,255,136,0.25);
   letter-spacing:0.05em;
+  display:inline-block;
 }
 .nav-contact:hover{
   transform:translateY(-1px);
@@ -826,7 +826,7 @@ footer{
     <button class="nav-btn" data-page="courses" onclick="showPage('courses')">Courses</button>
     <button class="nav-btn" data-page="youtube" onclick="showPage('youtube')">YouTube</button>
   </div>
-  <button class="nav-contact" onclick="window.location='mailto:quantalphatrading12@gmail.com'">CONTACT →</button>
+  <a href="mailto:quantalphatrading12@gmail.com" class="nav-contact">CONTACT →</a>
 </nav>
 
 <!-- HOME -->
