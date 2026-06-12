@@ -8,21 +8,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:auto}
 :root{
-  --bg:#0a0a0f;
-  --bg2:#0f0f18;
-  --bg3:#141420;
-  --blue:#3b82f6;
-  --blue2:#60a5fa;
-  --purple:#8b5cf6;
-  --purple2:#a78bfa;
-  --grad:linear-gradient(135deg,#3b82f6 0%,#8b5cf6 100%);
-  --grad2:linear-gradient(135deg,#8b5cf6 0%,#3b82f6 100%);
-  --text:#f1f5f9;
-  --muted:#64748b;
-  --muted2:#475569;
-  --border:rgba(139,92,246,0.15);
+  --bg:#050505;
+  --bg2:#0a0a0a;
+  --bg3:#0f0f0f;
+  --green:#00ff88;
+  --green2:#00cc6a;
+  --green3:#009955;
+  --grad:linear-gradient(135deg,#00ff88 0%,#00cc6a 100%);
+  --grad2:linear-gradient(135deg,#00cc6a 0%,#00ff88 100%);
+  --text:#f0f0f0;
+  --muted:#808080;
+  --muted2:#505050;
+  --border:rgba(0,255,136,0.12);
   --mono:'JetBrains Mono',monospace;
   --sans:'Space Grotesk',sans-serif;
 }
@@ -35,14 +34,25 @@ body{
   position:relative;
 }
 
-/* Animated background */
+/* Subtle grid background - quant/terminal feel */
 body::before{
   content:'';
   position:fixed;
   inset:0;
+  background-image:
+    linear-gradient(rgba(0,255,136,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,255,136,0.03) 1px,transparent 1px);
+  background-size:50px 50px;
+  pointer-events:none;
+  z-index:0;
+}
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
   background:
-    radial-gradient(circle at 20% 30%,rgba(59,130,246,0.08) 0%,transparent 50%),
-    radial-gradient(circle at 80% 70%,rgba(139,92,246,0.08) 0%,transparent 50%);
+    radial-gradient(circle at 20% 30%,rgba(0,255,136,0.06) 0%,transparent 50%),
+    radial-gradient(circle at 80% 70%,rgba(0,204,106,0.06) 0%,transparent 50%);
   pointer-events:none;
   z-index:0;
 }
@@ -52,11 +62,11 @@ nav{
   position:fixed;
   top:0;left:0;right:0;
   z-index:1000;
-  padding:1rem 3rem;
+  padding:0.85rem 3rem;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  background:rgba(10,10,15,0.85);
+  background:rgba(5,5,5,0.9);
   backdrop-filter:blur(20px);
   border-bottom:1px solid var(--border);
 }
@@ -68,31 +78,31 @@ nav{
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   cursor:pointer;
-  letter-spacing:0.05em;
+  letter-spacing:0.08em;
 }
-.nav-items{display:flex;gap:0.5rem}
+.nav-items{display:flex;gap:0.25rem}
 .nav-btn{
   font-family:var(--mono);
-  font-size:0.75rem;
+  font-size:0.72rem;
   font-weight:500;
   color:var(--muted);
   background:none;
   border:none;
   cursor:pointer;
-  padding:0.5rem 1rem;
-  border-radius:8px;
-  transition:all 0.3s;
+  padding:0.45rem 0.95rem;
+  border-radius:6px;
+  transition:all 0.2s;
   position:relative;
 }
-.nav-btn:hover{color:var(--text);background:rgba(139,92,246,0.1)}
+.nav-btn:hover{color:var(--text);background:rgba(0,255,136,0.08)}
 .nav-btn.active{
-  color:var(--purple2);
-  background:rgba(139,92,246,0.15);
+  color:var(--green);
+  background:rgba(0,255,136,0.1);
 }
 .nav-btn.active::after{
   content:'';
   position:absolute;
-  bottom:0;left:50%;
+  bottom:-1px;left:50%;
   transform:translateX(-50%);
   width:20px;height:2px;
   background:var(--grad);
@@ -100,32 +110,30 @@ nav{
 }
 .nav-contact{
   font-family:var(--mono);
-  font-size:0.75rem;
+  font-size:0.72rem;
   font-weight:700;
-  color:#fff;
+  color:#000;
   background:var(--grad);
   border:none;
   cursor:pointer;
-  padding:0.6rem 1.5rem;
-  border-radius:8px;
-  transition:all 0.3s;
-  box-shadow:0 4px 20px rgba(139,92,246,0.3);
+  padding:0.55rem 1.3rem;
+  border-radius:6px;
+  transition:all 0.2s;
+  box-shadow:0 4px 20px rgba(0,255,136,0.25);
+  letter-spacing:0.05em;
 }
 .nav-contact:hover{
-  transform:translateY(-2px);
-  box-shadow:0 6px 30px rgba(139,92,246,0.5);
+  transform:translateY(-1px);
+  box-shadow:0 6px 25px rgba(0,255,136,0.4);
 }
 
 /* PAGES */
 .page{display:none;position:relative;z-index:1;min-height:100vh}
 .page.active{display:block}
 
-/* HOME */
+/* HOME - reduced top padding for instant visibility */
 #home{
-  padding:8rem 3rem 4rem;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
+  padding:6.5rem 3rem 3rem;
   max-width:1400px;
   margin:0 auto;
 }
@@ -134,23 +142,23 @@ nav{
   align-items:center;
   gap:0.5rem;
   font-family:var(--mono);
-  font-size:0.7rem;
+  font-size:0.68rem;
   font-weight:600;
-  color:var(--purple2);
-  background:rgba(139,92,246,0.1);
-  border:1px solid rgba(139,92,246,0.3);
-  padding:0.4rem 1rem;
+  color:var(--green);
+  background:rgba(0,255,136,0.08);
+  border:1px solid rgba(0,255,136,0.25);
+  padding:0.35rem 1rem;
   border-radius:100px;
-  margin-bottom:2rem;
-  letter-spacing:0.1em;
+  margin-bottom:1.5rem;
+  letter-spacing:0.12em;
   text-transform:uppercase;
 }
 .hero-badge::before{
   content:'';
   width:6px;height:6px;
   border-radius:50%;
-  background:var(--purple);
-  box-shadow:0 0 10px var(--purple);
+  background:var(--green);
+  box-shadow:0 0 10px var(--green);
   animation:pulse 2s ease-in-out infinite;
 }
 @keyframes pulse{
@@ -160,9 +168,9 @@ nav{
 .hero-h1{
   font-size:clamp(2.5rem,5vw,4.5rem);
   font-weight:700;
-  line-height:1.1;
-  letter-spacing:-0.02em;
-  margin-bottom:1.5rem;
+  line-height:1.05;
+  letter-spacing:-0.025em;
+  margin-bottom:1.25rem;
 }
 .grad-text{
   background:var(--grad);
@@ -171,117 +179,128 @@ nav{
   background-clip:text;
 }
 .hero-sub{
-  font-size:1.1rem;
+  font-size:1.05rem;
   color:var(--muted);
   max-width:700px;
-  margin-bottom:1rem;
-  line-height:1.8;
+  margin-bottom:0.8rem;
+  line-height:1.75;
 }
 .hero-code{
   font-family:var(--mono);
-  font-size:0.85rem;
+  font-size:0.82rem;
   color:var(--muted);
-  background:rgba(139,92,246,0.05);
+  background:rgba(0,255,136,0.03);
   border:1px solid var(--border);
-  border-radius:12px;
-  padding:1.5rem 2rem;
-  margin:2rem 0;
+  border-radius:10px;
+  padding:1.25rem 1.75rem;
+  margin:1.5rem 0;
   max-width:700px;
-  line-height:1.8;
+  line-height:1.85;
+  position:relative;
 }
-.hero-code .c1{color:var(--blue2)}
-.hero-code .c2{color:var(--purple2)}
+.hero-code::before{
+  content:'>';
+  position:absolute;
+  top:1.25rem;left:0.75rem;
+  color:var(--green);
+  font-weight:700;
+}
+.hero-code .c1{color:var(--green)}
+.hero-code .c2{color:var(--green2)}
 .hero-code .cursor{
   display:inline-block;
   width:8px;height:1em;
-  background:var(--purple);
+  background:var(--green);
   animation:blink 1s step-end infinite;
   margin-left:2px;
+  vertical-align:middle;
 }
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
 .stack-row{
   display:flex;
   flex-wrap:wrap;
-  gap:0.6rem;
-  margin:2rem 0;
+  gap:0.5rem;
+  margin:1.5rem 0;
 }
 .stack-tag{
   font-family:var(--mono);
-  font-size:0.75rem;
+  font-size:0.72rem;
   font-weight:500;
   color:var(--muted);
-  background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,255,255,0.08);
-  padding:0.4rem 1rem;
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(0,255,136,0.1);
+  padding:0.35rem 0.9rem;
   border-radius:6px;
-  transition:all 0.3s;
+  transition:all 0.2s;
 }
 .stack-tag:hover{
-  color:var(--purple2);
-  border-color:rgba(139,92,246,0.4);
-  background:rgba(139,92,246,0.08);
-  transform:translateY(-2px);
+  color:var(--green);
+  border-color:rgba(0,255,136,0.4);
+  background:rgba(0,255,136,0.06);
+  transform:translateY(-1px);
 }
 
 .hero-btns{
   display:flex;
   gap:1rem;
-  margin:2.5rem 0 3rem;
+  margin:2rem 0 2.5rem;
 }
 .btn-primary{
   font-family:var(--mono);
-  font-size:0.85rem;
+  font-size:0.82rem;
   font-weight:700;
   background:var(--grad);
-  color:#fff;
+  color:#000;
   border:none;
   cursor:pointer;
-  padding:0.9rem 2rem;
-  border-radius:10px;
-  transition:all 0.3s;
-  box-shadow:0 4px 20px rgba(139,92,246,0.3);
+  padding:0.8rem 1.8rem;
+  border-radius:8px;
+  transition:all 0.2s;
+  box-shadow:0 4px 20px rgba(0,255,136,0.25);
   text-decoration:none;
   display:inline-block;
+  letter-spacing:0.03em;
 }
 .btn-primary:hover{
-  transform:translateY(-2px);
-  box-shadow:0 6px 30px rgba(139,92,246,0.5);
+  transform:translateY(-1px);
+  box-shadow:0 6px 25px rgba(0,255,136,0.4);
 }
 .btn-secondary{
   font-family:var(--mono);
-  font-size:0.85rem;
+  font-size:0.82rem;
   font-weight:600;
-  background:rgba(255,255,255,0.05);
-  color:var(--text);
-  border:1px solid rgba(255,255,255,0.1);
+  background:rgba(0,255,136,0.05);
+  color:var(--green);
+  border:1px solid rgba(0,255,136,0.25);
   cursor:pointer;
-  padding:0.9rem 2rem;
-  border-radius:10px;
-  transition:all 0.3s;
+  padding:0.8rem 1.8rem;
+  border-radius:8px;
+  transition:all 0.2s;
   text-decoration:none;
   display:inline-block;
 }
 .btn-secondary:hover{
-  border-color:rgba(139,92,246,0.4);
-  background:rgba(139,92,246,0.08);
-  transform:translateY(-2px);
+  border-color:rgba(0,255,136,0.5);
+  background:rgba(0,255,136,0.1);
+  transform:translateY(-1px);
 }
 
 .spec-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
   gap:1rem;
-  margin-top:3rem;
+  margin-top:2rem;
 }
 .spec-card{
-  background:rgba(255,255,255,0.02);
-  border:1px solid rgba(255,255,255,0.06);
-  border-radius:12px;
-  padding:1.5rem;
-  transition:all 0.3s;
+  background:rgba(0,255,136,0.02);
+  border:1px solid rgba(0,255,136,0.1);
+  border-radius:10px;
+  padding:1.4rem;
+  transition:all 0.2s;
   position:relative;
   overflow:hidden;
+  cursor:pointer;
 }
 .spec-card::before{
   content:'';
@@ -290,89 +309,85 @@ nav{
   height:2px;
   background:var(--grad);
   opacity:0;
-  transition:opacity 0.3s;
+  transition:opacity 0.2s;
 }
 .spec-card:hover{
-  background:rgba(139,92,246,0.05);
-  border-color:rgba(139,92,246,0.3);
-  transform:translateY(-4px);
+  background:rgba(0,255,136,0.05);
+  border-color:rgba(0,255,136,0.3);
+  transform:translateY(-2px);
 }
 .spec-card:hover::before{opacity:1}
 .spec-icon{
   font-size:1.5rem;
-  margin-bottom:0.8rem;
+  margin-bottom:0.6rem;
 }
 .spec-title{
   font-size:0.95rem;
   font-weight:700;
-  margin-bottom:0.4rem;
+  margin-bottom:0.3rem;
 }
 .spec-desc{
   font-size:0.8rem;
   color:var(--muted);
-  line-height:1.6;
+  line-height:1.55;
 }
 
-/* INNER PAGES */
+/* INNER PAGES - reduced padding */
 .inner{
-  padding:8rem 3rem 4rem;
+  padding:6.5rem 3rem 3rem;
   max-width:1400px;
   margin:0 auto;
 }
 .page-badge{
   font-family:var(--mono);
-  font-size:0.7rem;
+  font-size:0.68rem;
   font-weight:700;
-  color:var(--purple2);
+  color:var(--green);
   letter-spacing:0.15em;
   text-transform:uppercase;
-  margin-bottom:0.8rem;
+  margin-bottom:0.6rem;
 }
 .page-h1{
-  font-size:clamp(2rem,4vw,3.5rem);
+  font-size:clamp(2rem,4vw,3.2rem);
   font-weight:700;
   letter-spacing:-0.02em;
-  margin-bottom:1rem;
+  margin-bottom:0.8rem;
   line-height:1.1;
 }
 .page-sub{
-  font-size:1rem;
+  font-size:0.95rem;
   color:var(--muted);
   max-width:700px;
-  line-height:1.8;
-  margin-bottom:3rem;
+  line-height:1.75;
+  margin-bottom:2rem;
 }
 
 /* SUBNAV */
 .subnav{
   display:flex;
-  gap:0.5rem;
-  margin-bottom:3rem;
-  background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:12px;
-  padding:0.5rem;
+  gap:0.25rem;
+  margin-bottom:2rem;
+  background:rgba(0,255,136,0.03);
+  border:1px solid rgba(0,255,136,0.12);
+  border-radius:8px;
+  padding:0.3rem;
   width:fit-content;
 }
 .subnav-btn{
   font-family:var(--mono);
-  font-size:0.75rem;
+  font-size:0.72rem;
   font-weight:600;
   color:var(--muted);
   background:none;
   border:none;
   cursor:pointer;
-  padding:0.5rem 1.2rem;
-  border-radius:8px;
-  transition:all 0.3s;
+  padding:0.45rem 1rem;
+  border-radius:6px;
+  transition:all 0.2s;
 }
 .subnav-btn.active,.subnav-btn:hover{
-  color:var(--text);
-  background:rgba(139,92,246,0.15);
-}
-.subnav-btn.active{
-  color:var(--purple2);
-  box-shadow:0 2px 10px rgba(139,92,246,0.2);
+  color:var(--green);
+  background:rgba(0,255,136,0.1);
 }
 
 .subpage{display:none}
@@ -381,235 +396,221 @@ nav{
 /* CATEGORY */
 .cat-label{
   font-family:var(--mono);
-  font-size:0.7rem;
+  font-size:0.68rem;
   font-weight:700;
-  color:var(--blue2);
+  color:var(--green);
   letter-spacing:0.12em;
   text-transform:uppercase;
-  margin:2.5rem 0 1.5rem;
+  margin:2rem 0 1.2rem;
   display:flex;
   align-items:center;
-  gap:1rem;
+  gap:0.8rem;
 }
 .cat-label::after{
   content:'';
   flex:1;
   height:1px;
-  background:linear-gradient(90deg,rgba(59,130,246,0.3),transparent);
+  background:linear-gradient(90deg,rgba(0,255,136,0.3),transparent);
 }
 
 /* CARDS */
 .cards{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
-  gap:1.2rem;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:1rem;
 }
 .card{
-  background:rgba(255,255,255,0.02);
-  border:1px solid rgba(255,255,255,0.06);
-  border-radius:14px;
-  padding:1.8rem;
-  transition:all 0.3s;
+  background:rgba(0,255,136,0.02);
+  border:1px solid rgba(0,255,136,0.1);
+  border-radius:10px;
+  padding:1.5rem;
+  transition:all 0.2s;
   position:relative;
   overflow:hidden;
   cursor:pointer;
 }
-.card::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:var(--grad);
-  opacity:0;
-  transition:opacity 0.3s;
-  z-index:0;
-}
 .card:hover{
-  border-color:rgba(139,92,246,0.4);
-  transform:translateY(-4px);
-  box-shadow:0 8px 30px rgba(139,92,246,0.2);
+  border-color:rgba(0,255,136,0.35);
+  transform:translateY(-2px);
+  box-shadow:0 8px 25px rgba(0,255,136,0.1);
+  background:rgba(0,255,136,0.04);
 }
-.card:hover::before{opacity:0.03}
-.card>*{position:relative;z-index:1}
 .card-header{
   display:flex;
   justify-content:space-between;
   align-items:flex-start;
-  margin-bottom:1rem;
+  margin-bottom:0.8rem;
 }
 .card-tag{
   font-family:var(--mono);
-  font-size:0.65rem;
+  font-size:0.62rem;
   font-weight:700;
   letter-spacing:0.1em;
   text-transform:uppercase;
-  padding:0.3rem 0.8rem;
-  border-radius:6px;
-}
-.tag-blue{
-  color:var(--blue2);
-  background:rgba(59,130,246,0.15);
-  border:1px solid rgba(59,130,246,0.3);
-}
-.tag-purple{
-  color:var(--purple2);
-  background:rgba(139,92,246,0.15);
-  border:1px solid rgba(139,92,246,0.3);
+  padding:0.25rem 0.7rem;
+  border-radius:4px;
 }
 .tag-green{
-  color:#10b981;
-  background:rgba(16,185,129,0.15);
-  border:1px solid rgba(16,185,129,0.3);
+  color:var(--green);
+  background:rgba(0,255,136,0.12);
+  border:1px solid rgba(0,255,136,0.3);
+}
+.tag-dark{
+  color:var(--green2);
+  background:rgba(0,204,106,0.1);
+  border:1px solid rgba(0,204,106,0.25);
 }
 .tag-soon{
   color:var(--muted);
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
 }
 .card-title{
-  font-size:1.05rem;
+  font-size:1rem;
   font-weight:700;
-  margin-bottom:0.6rem;
+  margin-bottom:0.5rem;
 }
 .card-desc{
-  font-size:0.85rem;
+  font-size:0.82rem;
   color:var(--muted);
-  line-height:1.7;
+  line-height:1.65;
 }
 .card-link{
   display:inline-flex;
   align-items:center;
-  gap:0.4rem;
-  margin-top:1.2rem;
+  gap:0.3rem;
+  margin-top:1rem;
   font-family:var(--mono);
-  font-size:0.75rem;
-  color:var(--blue2);
+  font-size:0.72rem;
+  color:var(--green);
   text-decoration:none;
-  transition:all 0.3s;
+  transition:all 0.2s;
 }
 .card-link:hover{
-  color:var(--purple2);
-  gap:0.6rem;
+  color:var(--green2);
+  gap:0.5rem;
 }
 
 /* SAAS CARDS */
 .saas-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
-  gap:1.5rem;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:1.25rem;
 }
 .saas-card{
-  background:rgba(255,255,255,0.02);
-  border:1px solid rgba(255,255,255,0.06);
-  border-radius:16px;
-  padding:2.5rem;
-  transition:all 0.3s;
+  background:rgba(0,255,136,0.02);
+  border:1px solid rgba(0,255,136,0.1);
+  border-radius:12px;
+  padding:2rem;
+  transition:all 0.25s;
   position:relative;
   overflow:hidden;
+  cursor:pointer;
 }
 .saas-card::after{
   content:'';
   position:absolute;
   bottom:0;left:0;right:0;
-  height:150px;
-  background:linear-gradient(0deg,rgba(139,92,246,0.08),transparent);
+  height:100px;
+  background:linear-gradient(0deg,rgba(0,255,136,0.06),transparent);
   pointer-events:none;
 }
 .saas-card:hover{
-  border-color:rgba(139,92,246,0.4);
-  transform:translateY(-6px);
-  box-shadow:0 12px 40px rgba(139,92,246,0.25);
+  border-color:rgba(0,255,136,0.4);
+  transform:translateY(-4px);
+  box-shadow:0 12px 35px rgba(0,255,136,0.15);
 }
 .saas-num{
   font-family:var(--mono);
-  font-size:3.5rem;
+  font-size:3rem;
   font-weight:700;
   background:var(--grad);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
-  opacity:0.3;
-  margin-bottom:1rem;
+  opacity:0.35;
+  margin-bottom:0.8rem;
 }
 .saas-name{
-  font-size:1.3rem;
+  font-size:1.2rem;
   font-weight:700;
-  margin-bottom:0.5rem;
+  margin-bottom:0.4rem;
 }
 .saas-mono{
   font-family:var(--mono);
-  font-size:0.75rem;
-  color:var(--purple2);
-  margin-bottom:1rem;
+  font-size:0.72rem;
+  color:var(--green);
+  margin-bottom:0.8rem;
   letter-spacing:0.05em;
 }
 .saas-desc{
-  font-size:0.9rem;
+  font-size:0.88rem;
   color:var(--muted);
-  line-height:1.8;
+  line-height:1.75;
 }
 
 /* GIG CARDS */
 .gig-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
-  gap:1.3rem;
+  grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:1.1rem;
 }
 .gig-card{
-  background:rgba(255,255,255,0.02);
-  border:1px solid rgba(255,255,255,0.06);
-  border-radius:14px;
-  padding:2rem;
-  transition:all 0.3s;
+  background:rgba(0,255,136,0.02);
+  border:1px solid rgba(0,255,136,0.1);
+  border-radius:10px;
+  padding:1.8rem;
+  transition:all 0.2s;
 }
 .gig-card:hover{
-  border-color:rgba(59,130,246,0.4);
-  transform:translateY(-4px);
-  box-shadow:0 8px 30px rgba(59,130,246,0.2);
+  border-color:rgba(0,255,136,0.35);
+  transform:translateY(-2px);
+  box-shadow:0 8px 25px rgba(0,255,136,0.1);
 }
 .gig-num{
   font-family:var(--mono);
-  font-size:0.7rem;
+  font-size:0.68rem;
   font-weight:700;
-  color:var(--blue2);
+  color:var(--green);
   letter-spacing:0.12em;
-  margin-bottom:1rem;
-}
-.gig-title{
-  font-size:1.1rem;
-  font-weight:700;
   margin-bottom:0.8rem;
 }
+.gig-title{
+  font-size:1.05rem;
+  font-weight:700;
+  margin-bottom:0.6rem;
+}
 .gig-desc{
-  font-size:0.85rem;
+  font-size:0.82rem;
   color:var(--muted);
-  line-height:1.8;
-  margin-bottom:1.5rem;
+  line-height:1.7;
+  margin-bottom:1.2rem;
 }
 .gig-email{
   font-family:var(--mono);
-  font-size:0.75rem;
-  color:var(--blue2);
+  font-size:0.72rem;
+  color:var(--green);
   text-decoration:none;
   display:inline-flex;
   align-items:center;
-  gap:0.4rem;
-  transition:all 0.3s;
+  gap:0.3rem;
+  transition:all 0.2s;
 }
 .gig-email:hover{
-  color:var(--purple2);
-  gap:0.6rem;
+  color:var(--green2);
+  gap:0.5rem;
 }
 
 /* YOUTUBE HERO */
 .yt-hero{
-  background:rgba(255,255,255,0.02);
-  border:1px solid rgba(255,255,255,0.06);
-  border-radius:20px;
-  padding:3rem;
+  background:rgba(0,255,136,0.03);
+  border:1px solid rgba(0,255,136,0.15);
+  border-radius:14px;
+  padding:2.5rem;
   display:grid;
   grid-template-columns:auto 1fr;
-  gap:3rem;
+  gap:2.5rem;
   align-items:center;
-  margin-bottom:3rem;
+  margin-bottom:2.5rem;
   position:relative;
   overflow:hidden;
 }
@@ -617,68 +618,69 @@ nav{
   content:'';
   position:absolute;
   inset:0;
-  background:linear-gradient(135deg,rgba(59,130,246,0.05),rgba(139,92,246,0.05));
+  background:linear-gradient(135deg,rgba(0,255,136,0.04),rgba(0,204,106,0.02));
 }
 .yt-logo{
-  width:90px;height:90px;
-  border-radius:18px;
+  width:80px;height:80px;
+  border-radius:14px;
   background:var(--grad);
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:2.5rem;
+  font-size:2.2rem;
+  color:#000;
   flex-shrink:0;
   position:relative;
   z-index:1;
-  box-shadow:0 8px 30px rgba(139,92,246,0.3);
+  box-shadow:0 8px 30px rgba(0,255,136,0.3);
 }
 .yt-info{position:relative;z-index:1}
 .yt-handle{
   font-family:var(--mono);
-  font-size:1.3rem;
+  font-size:1.2rem;
   font-weight:700;
   background:var(--grad);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
-  margin-bottom:0.8rem;
+  margin-bottom:0.6rem;
 }
 .yt-desc{
-  font-size:0.95rem;
+  font-size:0.9rem;
   color:var(--muted);
-  line-height:1.8;
-  margin-bottom:1.5rem;
+  line-height:1.75;
+  margin-bottom:1.2rem;
   max-width:600px;
 }
 .yt-tags{
   display:flex;
   flex-wrap:wrap;
-  gap:0.5rem;
-  margin-bottom:2rem;
+  gap:0.4rem;
+  margin-bottom:1.5rem;
 }
 .yt-tag{
   font-family:var(--mono);
-  font-size:0.7rem;
+  font-size:0.68rem;
   color:var(--muted);
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);
-  padding:0.3rem 0.9rem;
-  border-radius:6px;
+  background:rgba(0,255,136,0.04);
+  border:1px solid rgba(0,255,136,0.12);
+  padding:0.25rem 0.75rem;
+  border-radius:4px;
 }
 
 /* FOOTER */
 footer{
   border-top:1px solid var(--border);
-  padding:2.5rem 3rem;
+  padding:2rem 3rem;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  margin-top:4rem;
+  margin-top:3rem;
   position:relative;
   z-index:1;
 }
 .footer-logo{
   font-family:var(--mono);
-  font-size:0.9rem;
+  font-size:0.88rem;
   font-weight:700;
   background:var(--grad);
   -webkit-background-clip:text;
@@ -690,19 +692,19 @@ footer{
 }
 .footer-links a{
   font-family:var(--mono);
-  font-size:0.75rem;
+  font-size:0.72rem;
   color:var(--muted);
   text-decoration:none;
-  transition:color 0.3s;
+  transition:color 0.2s;
 }
-.footer-links a:hover{color:var(--purple2)}
+.footer-links a:hover{color:var(--green)}
 
 /* MODAL */
 .modal{
   display:none;
   position:fixed;
   inset:0;
-  background:rgba(10,10,15,0.95);
+  background:rgba(0,0,0,0.92);
   backdrop-filter:blur(10px);
   z-index:2000;
   align-items:center;
@@ -712,114 +714,117 @@ footer{
 .modal.active{display:flex}
 .modal-content{
   background:var(--bg2);
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:3rem;
-  max-width:700px;
+  border:1px solid rgba(0,255,136,0.2);
+  border-radius:14px;
+  padding:2.5rem;
+  max-width:680px;
   max-height:80vh;
   overflow-y:auto;
   position:relative;
-  animation:modalIn 0.3s ease-out;
+  animation:modalIn 0.2s ease-out;
+  box-shadow:0 0 60px rgba(0,255,136,0.1);
 }
 @keyframes modalIn{
-  from{opacity:0;transform:scale(0.95) translateY(20px)}
+  from{opacity:0;transform:scale(0.96) translateY(10px)}
   to{opacity:1;transform:scale(1) translateY(0)}
 }
 .modal-close{
   position:absolute;
-  top:1.5rem;right:1.5rem;
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.1);
+  top:1.25rem;right:1.25rem;
+  background:rgba(0,255,136,0.05);
+  border:1px solid rgba(0,255,136,0.15);
   color:var(--text);
-  width:36px;height:36px;
-  border-radius:8px;
+  width:34px;height:34px;
+  border-radius:6px;
   cursor:pointer;
   font-size:1.2rem;
   display:flex;
   align-items:center;
   justify-content:center;
-  transition:all 0.3s;
+  transition:all 0.2s;
 }
 .modal-close:hover{
-  background:rgba(139,92,246,0.2);
-  border-color:rgba(139,92,246,0.4);
+  background:rgba(0,255,136,0.15);
+  border-color:rgba(0,255,136,0.4);
+  color:var(--green);
 }
 .modal-badge{
   font-family:var(--mono);
-  font-size:0.7rem;
+  font-size:0.68rem;
   font-weight:700;
-  color:var(--purple2);
+  color:var(--green);
   letter-spacing:0.12em;
   text-transform:uppercase;
-  margin-bottom:0.8rem;
+  margin-bottom:0.6rem;
 }
 .modal-title{
-  font-size:1.8rem;
+  font-size:1.6rem;
   font-weight:700;
-  margin-bottom:1.5rem;
+  margin-bottom:1.2rem;
 }
 .modal-desc{
-  font-size:0.95rem;
+  font-size:0.92rem;
   color:var(--muted);
-  line-height:1.8;
-  margin-bottom:2rem;
+  line-height:1.75;
+  margin-bottom:1.8rem;
 }
 .modal-section{
-  margin-bottom:2rem;
+  margin-bottom:1.5rem;
 }
 .modal-section-title{
   font-family:var(--mono);
-  font-size:0.8rem;
+  font-size:0.72rem;
   font-weight:700;
-  color:var(--blue2);
+  color:var(--green);
   letter-spacing:0.1em;
   text-transform:uppercase;
-  margin-bottom:1rem;
+  margin-bottom:0.8rem;
 }
 .modal-list{
   list-style:none;
 }
 .modal-list li{
-  font-size:0.9rem;
+  font-size:0.88rem;
   color:var(--muted);
-  padding:0.6rem 0;
-  border-bottom:1px solid rgba(255,255,255,0.05);
+  padding:0.5rem 0;
+  border-bottom:1px solid rgba(0,255,136,0.06);
   display:flex;
   align-items:flex-start;
-  gap:0.8rem;
+  gap:0.7rem;
 }
 .modal-list li::before{
   content:'→';
-  color:var(--purple2);
+  color:var(--green);
   font-weight:700;
   flex-shrink:0;
 }
 
 @media(max-width:768px){
-  nav{padding:1rem 1.5rem}
-  .nav-items{gap:0.2rem}
-  .nav-btn{padding:0.4rem 0.6rem;font-size:0.65rem}
-  #home,.inner{padding-left:1.5rem;padding-right:1.5rem}
+  nav{padding:0.75rem 1.2rem}
+  .nav-items{gap:0.1rem;flex-wrap:wrap}
+  .nav-btn{padding:0.35rem 0.55rem;font-size:0.62rem}
+  .nav-contact{padding:0.45rem 0.9rem;font-size:0.65rem}
+  #home,.inner{padding-left:1.2rem;padding-right:1.2rem}
   .hero-h1{font-size:2rem}
-  .yt-hero{grid-template-columns:1fr;text-align:center}
+  .yt-hero{grid-template-columns:1fr;text-align:center;padding:1.5rem}
   .yt-logo{margin:0 auto}
-  footer{flex-direction:column;gap:1.5rem;text-align:center}
-  .modal-content{padding:2rem}
+  footer{flex-direction:column;gap:1rem;text-align:center;padding:1.5rem 1.2rem}
+  .modal-content{padding:1.5rem}
 }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="nav-logo" onclick="showPage('home')">ALGOQUANT</div>
+  <div class="nav-logo" onclick="showPage('home')">ALGOQUANT_</div>
   <div class="nav-items">
-    <button class="nav-btn active" onclick="showPage('home')">Home</button>
-    <button class="nav-btn" onclick="showPage('strategies')">Strategies</button>
-    <button class="nav-btn" onclick="showPage('bots')">Bots</button>
-    <button class="nav-btn" onclick="showPage('saas')">SaaS</button>
-    <button class="nav-btn" onclick="showPage('freelance')">Freelance</button>
-    <button class="nav-btn" onclick="showPage('courses')">Courses</button>
-    <button class="nav-btn" onclick="showPage('youtube')">YouTube</button>
+    <button class="nav-btn active" data-page="home" onclick="showPage('home')">Home</button>
+    <button class="nav-btn" data-page="strategies" onclick="showPage('strategies')">Strategies</button>
+    <button class="nav-btn" data-page="bots" onclick="showPage('bots')">Bots</button>
+    <button class="nav-btn" data-page="saas" onclick="showPage('saas')">SaaS</button>
+    <button class="nav-btn" data-page="freelance" onclick="showPage('freelance')">Freelance</button>
+    <button class="nav-btn" data-page="courses" onclick="showPage('courses')">Courses</button>
+    <button class="nav-btn" data-page="youtube" onclick="showPage('youtube')">YouTube</button>
   </div>
   <button class="nav-contact" onclick="window.location='mailto:quantalphatrading12@gmail.com'">CONTACT →</button>
 </nav>
@@ -901,27 +906,27 @@ footer{
       <div class="cat-label">CFD Strategies</div>
       <div class="cards">
         <div class="card" onclick="openModal('Triple EMA + ATR Stack','TREND','Multi-timeframe trend following system using 9/21/55 EMA alignment with ATR(14) dynamic stops. Entry on full stack crossover with percentage-risk lot sizing. No fixed pips — adapts to volatility automatically.','Regime Detection,Volatility Filter,Dynamic Position Sizing,ATR Trailing Stop,Multi-Timeframe Confirmation')">
-          <div class="card-header"><div class="card-tag tag-blue">TREND</div></div>
+          <div class="card-header"><div class="card-tag tag-green">TREND</div></div>
           <div class="card-title">Triple EMA + ATR Stack</div>
           <div class="card-desc">9/21/55 EMA alignment with ATR(14) dynamic SL/TP. Entry on full stack crossover, percentage-risk lot sizing, no fixed pips.</div>
         </div>
         <div class="card" onclick="openModal('Volatility Breakout System','BREAKOUT','Identifies compression phases using ATR percentile ranking. Trades expansion with momentum confirmation. Auto-filters low-volatility sessions to avoid false breakouts.','ATR Percentile,Momentum Filter,Session Filter,Volume Confirmation,Dynamic Range Calculation')">
-          <div class="card-header"><div class="card-tag tag-blue">BREAKOUT</div></div>
+          <div class="card-header"><div class="card-tag tag-green">BREAKOUT</div></div>
           <div class="card-title">Volatility Breakout System</div>
           <div class="card-desc">ATR percentile ranking identifies compression phases. Trades expansion with momentum confirmation. Auto-filters low-volatility sessions.</div>
         </div>
         <div class="card" onclick="openModal('Statistical Mean Reversion','MEAN REV','Z-score entry at 2σ deviation from rolling mean. Bollinger confirmation, hard SL at 3σ. Optimized for range-bound instruments with automatic regime detection.','Z-Score Entry,Bollinger Bands,Regime Detection,Mean Reversion,Hard Stop Loss')">
-          <div class="card-header"><div class="card-tag tag-purple">MEAN REV</div></div>
+          <div class="card-header"><div class="card-tag tag-dark">MEAN REV</div></div>
           <div class="card-title">Statistical Mean Reversion</div>
           <div class="card-desc">Z-score entry at 2σ deviation from rolling mean. Bollinger confirmation, hard SL at 3σ. Optimized for range-bound instruments.</div>
         </div>
         <div class="card" onclick="openModal('Order Flow Imbalance','MICRO','Detects bid/ask volume imbalance to anticipate short-term direction. Delta divergence confirmation required before any entry is taken. High-frequency micro-structure analysis.','Order Flow,Delta Divergence,Bid/Ask Imbalance,Micro-Structure,High-Frequency')">
-          <div class="card-header"><div class="card-tag tag-purple">MICRO</div></div>
+          <div class="card-header"><div class="card-tag tag-dark">MICRO</div></div>
           <div class="card-title">Order Flow Imbalance</div>
           <div class="card-desc">Detects bid/ask volume imbalance to anticipate short-term direction. Delta divergence confirmation required before any entry is taken.</div>
         </div>
         <div class="card" onclick="openModal('Multi-Timeframe Momentum','MOMENTUM','H4 + H1 trend alignment, 15M pullback entry. ATR trailing stop, 1:2.5 minimum RR filter. Clean, rules-based, no discretion. Multi-timeframe confirmation chain.','Multi-Timeframe,Trend Alignment,Pullback Entry,ATR Trailing,RR Filter')">
-          <div class="card-header"><div class="card-tag tag-blue">MOMENTUM</div></div>
+          <div class="card-header"><div class="card-tag tag-green">MOMENTUM</div></div>
           <div class="card-title">Multi-Timeframe Momentum</div>
           <div class="card-desc">H4 + H1 trend alignment, 15M pullback entry. ATR trailing stop, 1:2.5 minimum RR filter. Clean, rules-based, no discretion.</div>
         </div>
@@ -932,27 +937,27 @@ footer{
       <div class="cat-label">Forex Strategies</div>
       <div class="cards">
         <div class="card" onclick="openModal('London Open Breakout EA','SESSION','Range built 06:00–08:00 GMT, breakout entry with volume confirmation. Auto-close before NY close. Runs on major pairs cleanly.','Session Timing,Range Detection,Volume Confirmation,Auto-Close,Major Pairs')">
-          <div class="card-header"><div class="card-tag tag-blue">SESSION</div></div>
+          <div class="card-header"><div class="card-tag tag-green">SESSION</div></div>
           <div class="card-title">London Open Breakout EA</div>
           <div class="card-desc">Range built 06:00–08:00 GMT, breakout entry with volume confirmation. Auto-close before NY close. Runs on major pairs cleanly.</div>
         </div>
         <div class="card" onclick="openModal('Carry Trade + Momentum Filter','MACRO','Systematic carry on high-yield pairs filtered by momentum regime. Reduces exposure during risk-off using VIX proxy signal.','Carry Trade,Momentum Filter,Risk-Off Detection,VIX Proxy,High-Yield Pairs')">
-          <div class="card-header"><div class="card-tag tag-purple">MACRO</div></div>
+          <div class="card-header"><div class="card-tag tag-dark">MACRO</div></div>
           <div class="card-title">Carry Trade + Momentum Filter</div>
           <div class="card-desc">Systematic carry on high-yield pairs filtered by momentum regime. Reduces exposure during risk-off using VIX proxy signal.</div>
         </div>
         <div class="card" onclick="openModal('FX Correlation Pairs Arb','STAT ARB','Exploits EURUSD/GBPUSD temporary divergence. Z-score entry, cointegration-validated, delta-neutral positioning. Mean reversion engine.','Pairs Trading,Cointegration,Z-Score,Delta-Neutral,Mean Reversion')">
-          <div class="card-header"><div class="card-tag tag-purple">STAT ARB</div></div>
+          <div class="card-header"><div class="card-tag tag-dark">STAT ARB</div></div>
           <div class="card-title">FX Correlation Pairs Arb</div>
           <div class="card-desc">Exploits EURUSD/GBPUSD temporary divergence. Z-score entry, cointegration-validated, delta-neutral positioning. Mean reversion engine.</div>
         </div>
         <div class="card" onclick="openModal('News Volatility Straddle','EVENT','Enters both directions before high-impact events, cancels losing side on first fill. Built for NFP, CPI, FOMC on EURUSD and USDJPY.','News Trading,Straddle Entry,Event Filter,Auto-Cancel,High-Impact')">
-          <div class="card-header"><div class="card-tag tag-blue">EVENT</div></div>
+          <div class="card-header"><div class="card-tag tag-green">EVENT</div></div>
           <div class="card-title">News Volatility Straddle</div>
           <div class="card-desc">Enters both directions before high-impact events, cancels losing side on first fill. Built for NFP, CPI, FOMC on EURUSD and USDJPY.</div>
         </div>
         <div class="card" onclick="openModal('Prop Firm Safe EA','PROP','Tuned for FTMO rules. Daily DD guard, drawdown pauser, news filter, weekend close. Built to keep the funded account, not just pass the test.','Prop Firm,Daily DD Guard,Drawdown Pauser,News Filter,Weekend Close')">
-          <div class="card-header"><div class="card-tag tag-green">PROP</div></div>
+          <div class="card-header"><div class="card-tag tag-green">PROP FIRM</div></div>
           <div class="card-title">Prop Firm Safe EA</div>
           <div class="card-desc">Tuned for FTMO rules. Daily DD guard, drawdown pauser, news filter, weekend close. Built to keep the funded account, not just pass the test.</div>
         </div>
@@ -963,27 +968,27 @@ footer{
       <div class="cat-label">Futures Strategies</div>
       <div class="cards">
         <div class="card" onclick="openModal('Funding Rate Arbitrage','ARB','Long spot / short perp when funding exceeds threshold. Delta-neutral by construction. Automated rebalancing on basis drift.','Funding Rate,Delta-Neutral,Basis Drift,Auto-Rebalance,Spot-Perp')">
-          <div class="card-header"><div class="card-tag tag-purple">ARB</div></div>
+          <div class="card-header"><div class="card-tag tag-dark">ARB</div></div>
           <div class="card-title">Funding Rate Arbitrage</div>
           <div class="card-desc">Long spot / short perp when funding exceeds threshold. Delta-neutral by construction. Automated rebalancing on basis drift.</div>
         </div>
         <div class="card" onclick="openModal('Basis Cash & Carry','NEUTRAL','Spot vs quarterly futures premium capture on BTC and ETH. Hold to expiry for guaranteed convergence. Kelly criterion sizing.','Cash & Carry,Basis Trading,Premium Capture,Expiry Convergence,Kelly Sizing')">
-          <div class="card-header"><div class="card-tag tag-blue">NEUTRAL</div></div>
+          <div class="card-header"><div class="card-tag tag-green">NEUTRAL</div></div>
           <div class="card-title">Basis Cash & Carry</div>
           <div class="card-desc">Spot vs quarterly futures premium capture on BTC and ETH. Hold to expiry for guaranteed convergence. Kelly criterion sizing.</div>
         </div>
         <div class="card" onclick="openModal('Liquidation Cascade Hunter','EVENT','Open interest + funding divergence detects over-leveraged positioning. Positions ahead of cascade zones. Tight risk management.','Open Interest,Funding Divergence,Cascade Detection,Leverage Analysis,Risk Management')">
-          <div class="card-header"><div class="card-tag tag-purple">EVENT</div></div>
+          <div class="card-header"><div class="card-tag tag-dark">EVENT</div></div>
           <div class="card-title">Liquidation Cascade Hunter</div>
           <div class="card-desc">Open interest + funding divergence detects over-leveraged positioning. Positions ahead of cascade zones. Tight risk management.</div>
         </div>
         <div class="card" onclick="openModal('Cross-Venue Lead/Lag','LATENCY','Exploits Binance price leadership over smaller venues. Statistical lag measured and traded on ETH and SOL perpetuals.','Lead/Lag,Cross-Venue,Statistical Lag,Binance Leadership,Perpetuals')">
-          <div class="card-header"><div class="card-tag tag-blue">LATENCY</div></div>
+          <div class="card-header"><div class="card-tag tag-green">LATENCY</div></div>
           <div class="card-title">Cross-Venue Lead/Lag</div>
           <div class="card-desc">Exploits Binance price leadership over smaller venues. Statistical lag measured and traded on ETH and SOL perpetuals.</div>
         </div>
         <div class="card" onclick="openModal('Term Structure Roll Yield','YIELD','Harvests roll yield from futures curves in contango and backwardation. Sized by curve steepness, rebalanced weekly.','Roll Yield,Term Structure,Contango,Backwardation,Weekly Rebalance')">
-          <div class="card-header"><div class="card-tag tag-purple">YIELD</div></div>
+          <div class="card-header"><div class="card-tag tag-dark">YIELD</div></div>
           <div class="card-title">Term Structure Roll Yield</div>
           <div class="card-desc">Harvests roll yield from futures curves in contango and backwardation. Sized by curve steepness, rebalanced weekly.</div>
         </div>
@@ -994,27 +999,27 @@ footer{
       <div class="cat-label">Crypto Strategies</div>
       <div class="cards">
         <div class="card" onclick="openModal('BTC 5-Min Binary Direction','PRICE ACTION','Price action model predicting BTC direction over 5-minute windows. EMA stack + ATR regime filter + volume confirmation. Chainlink data.','Price Action,Binary Direction,EMA Stack,ATR Filter,Chainlink Data')">
-          <div class="card-header"><div class="card-tag tag-blue">PRICE ACTION</div></div>
+          <div class="card-header"><div class="card-tag tag-green">PRICE ACTION</div></div>
           <div class="card-title">BTC 5-Min Binary Direction</div>
           <div class="card-desc">Price action model predicting BTC direction over 5-minute windows. EMA stack + ATR regime filter + volume confirmation. Chainlink data.</div>
         </div>
         <div class="card" onclick="openModal('Altcoin Beta Rotation','REL VALUE','Ranks altcoins by beta-adjusted momentum vs BTC. Long top decile, short bottom. Rebalances every 4H, correlation-aware sizing.','Beta Rotation,Momentum Ranking,Decile Selection,4H Rebalance,Correlation Sizing')">
-          <div class="card-header"><div class="card-tag tag-purple">REL VALUE</div></div>
+          <div class="card-header"><div class="card-tag tag-dark">REL VALUE</div></div>
           <div class="card-title">Altcoin Beta Rotation</div>
           <div class="card-desc">Ranks altcoins by beta-adjusted momentum vs BTC. Long top decile, short bottom. Rebalances every 4H, correlation-aware sizing.</div>
         </div>
         <div class="card" onclick="openModal('On-Chain Whale Signal','ON-CHAIN','Tracks large wallet movements and exchange inflows/outflows. Signals when whale accumulation diverges from price. Hyperliquid execution.','Whale Tracking,Exchange Flows,Accumulation Divergence,On-Chain,Hyperliquid')">
-          <div class="card-header"><div class="card-tag tag-purple">ON-CHAIN</div></div>
+          <div class="card-header"><div class="card-tag tag-dark">ON-CHAIN</div></div>
           <div class="card-title">On-Chain Whale Signal</div>
           <div class="card-desc">Tracks large wallet movements and exchange inflows/outflows. Signals when whale accumulation diverges from price. Hyperliquid execution.</div>
         </div>
         <div class="card" onclick="openModal('CEX vs DEX Funding Divergence','CROSS-VENUE','Monitors funding rate spread between Binance perps and GMX/Hyperliquid. Trades mean reversion with automated on-chain execution.','Funding Spread,CEX-DEX,Mean Reversion,On-Chain Execution,GMX/Hyperliquid')">
-          <div class="card-header"><div class="card-tag tag-blue">CROSS-VENUE</div></div>
+          <div class="card-header"><div class="card-tag tag-green">CROSS-VENUE</div></div>
           <div class="card-title">CEX vs DEX Funding Divergence</div>
           <div class="card-desc">Monitors funding rate spread between Binance perps and GMX/Hyperliquid. Trades mean reversion with automated on-chain execution.</div>
         </div>
         <div class="card" onclick="openModal('Stablecoin Depeg Monitor','EVENT','Real-time USDC/USDT/DAI peg deviation monitoring. Automated trades on depeg events with predefined recovery thesis and hard time-stop.','Depeg Monitor,Peg Deviation,Recovery Thesis,Time-Stop,Stablecoins')">
-          <div class="card-header"><div class="card-tag tag-purple">EVENT</div></div>
+          <div class="card-header"><div class="card-tag tag-dark">EVENT</div></div>
           <div class="card-title">Stablecoin Depeg Monitor</div>
           <div class="card-desc">Real-time USDC/USDT/DAI peg deviation monitoring. Automated trades on depeg events with predefined recovery thesis and hard time-stop.</div>
         </div>
@@ -1187,8 +1192,8 @@ footer{
         <div class="saas-mono">// paste python. get mql5. instantly.</div>
         <div class="saas-desc">Paste your Python trading strategy. Get production-ready MQL5 Expert Advisor code in seconds. Handles indicators, order logic, risk management, and error handling automatically. No manual translation ever again.</div>
       </div>
-      <div class="saas-card" onclick="openModal('Idea → Live Bot Pipeline','COMING SOON - SECRET SAUCE','Describe your strategy in plain English. The system builds the logic visually, you confirm the rules, it generates the code and backtests automatically. From idea to deployable bot — zero coding required. This is the secret sauce.','Natural Language,Visual Logic,Code Generation,Auto-Backtest,Zero Coding')">
-        <div class="card-tag tag-soon" style="position:absolute;top:1.5rem;right:1.5rem">COMING SOON - SECRET SAUCE</div>
+      <div class="saas-card" onclick="openModal('Idea → Live Bot Pipeline','SECRET SAUCE','Describe your strategy in plain English. The system builds the logic visually, you confirm the rules, it generates the code and backtests automatically. From idea to deployable bot — zero coding required. This is the secret sauce.','Natural Language,Visual Logic,Code Generation,Auto-Backtest,Zero Coding')">
+        <div class="card-tag tag-green" style="position:absolute;top:1.5rem;right:1.5rem">SECRET SAUCE</div>
         <div class="saas-num">03</div>
         <div class="saas-name">Idea → Live Bot Pipeline</div>
         <div class="saas-mono">// describe it. see it. deploy it.</div>
@@ -1310,12 +1315,12 @@ footer{
         <a href="mailto:quantalphatrading12@gmail.com?subject=EA+Activation+Key" class="card-link">→ Get your key</a>
       </div>
       <div class="card">
-        <div class="card-header"><div class="card-tag tag-blue">TUTORIALS</div></div>
+        <div class="card-header"><div class="card-tag tag-green">TUTORIALS</div></div>
         <div class="card-title">Strategy Breakdowns</div>
         <div class="card-desc">Every video explains the logic, the math, and the code. No black boxes. You understand exactly what's running on your chart and why.</div>
       </div>
       <div class="card">
-        <div class="card-header"><div class="card-tag tag-purple">CODE</div></div>
+        <div class="card-header"><div class="card-tag tag-dark">CODE</div></div>
         <div class="card-title">Python → MQL5 Walkthroughs</div>
         <div class="card-desc">Step-by-step conversion tutorials. Take any Python strategy and automate it on MT5. Full code shown, nothing hidden, nothing paywalled.</div>
       </div>
@@ -1338,24 +1343,29 @@ footer{
 </div>
 
 <footer>
-  <div class="footer-logo">ALGOQUANT</div>
+  <div class="footer-logo">ALGOQUANT_</div>
   <div class="footer-links">
     <a href="https://youtube.com/@AlgoQuantTrading" target="_blank">YouTube</a>
     <a href="mailto:quantalphatrading12@gmail.com">Email</a>
-    <a href="#" onclick="showPage('freelance')">Freelance</a>
-    <a href="#" onclick="showPage('saas')">SaaS</a>
+    <a href="#" onclick="showPage('freelance');return false;">Freelance</a>
+    <a href="#" onclick="showPage('saas');return false;">SaaS</a>
   </div>
 </footer>
 
 <script>
 function showPage(id){
+  // Hide all pages
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  // Show target page
   document.getElementById(id).classList.add('active');
+  
+  // Update nav buttons
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  const map={home:0,strategies:1,bots:2,saas:3,freelance:4,courses:5,youtube:6};
-  const btns=document.querySelectorAll('.nav-btn');
-  if(map[id]!==undefined) btns[map[id]].classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
+  const targetBtn = document.querySelector(`.nav-btn[data-page="${id}"]`);
+  if(targetBtn) targetBtn.classList.add('active');
+  
+  // Instant scroll to top - no animation, no delay
+  window.scrollTo(0, 0);
 }
 
 function showSub(page,sub){
@@ -1364,7 +1374,7 @@ function showSub(page,sub){
   pageEl.querySelectorAll('.subnav-btn').forEach(b=>b.classList.remove('active'));
   const target=document.getElementById(page+'-'+sub);
   if(target) target.classList.add('active');
-  event.target.classList.add('active');
+  if(event && event.target) event.target.classList.add('active');
 }
 
 function openModal(title,badge,desc,features){
@@ -1379,14 +1389,20 @@ function openModal(title,badge,desc,features){
     featuresList.appendChild(li);
   });
   document.getElementById('modal').classList.add('active');
+  document.body.style.overflow='hidden';
 }
 
 function closeModal(){
   document.getElementById('modal').classList.remove('active');
+  document.body.style.overflow='';
 }
 
 document.getElementById('modal').addEventListener('click',function(e){
   if(e.target===this) closeModal();
+});
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape') closeModal();
 });
 </script>
 </body>
